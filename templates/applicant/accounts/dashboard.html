@@ -1,0 +1,38 @@
+{% extends "applicant_base.html" %}
+
+{% block title %}
+    {{title}}
+{% endblock title %}
+
+
+{% block content %}
+    <div class="row">
+        {% for instruction in instructions %}
+
+
+        <div class="col-md-8 mx-auto">
+
+            <div class="card">
+                <div class="card-header bg-light">
+                    <h4>{{instruction.title}}</h4>
+                </div>
+
+
+                <ul class="list-group list-group-flush">
+                    {% for item in instruction.instructions.all %}
+
+
+                    <li class="list-group-item font-weight-bold">
+                        <i class="fas fa-check"></i>
+                        {{item.name}}
+                    </li>
+
+                    {% endfor %}
+                </ul>
+            </div>
+
+        </div>
+
+        {% endfor %}
+    </div>
+{% endblock content %}

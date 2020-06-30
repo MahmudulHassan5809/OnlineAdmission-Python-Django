@@ -1,0 +1,67 @@
+{% extends "landing_base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}
+    {{title}}
+{% endblock title %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-8">
+        <h1>vortibd.com-এ স্বাগতম</h1>
+       <p class="lead text-dark">
+           vortibd.com হলো এমন একটি ওয়েবসাইট, যেখানে একজন অভিভাবক শুধুমাত্র একটি অ্যাকাউন্ট তৈরী করে আমাদের রেজিস্টার্ড যেকোন শিক্ষা প্রতিষ্ঠানে তার এক বা একাধিক সন্তানের ভর্তির জন্য আবেদন করতে পারবেন।
+       </p>
+       <p class="lead text-dark">
+           vortibd.com-থেকে সকল শিক্ষা প্রতিষ্ঠানের ভর্তি-বিজ্ঞপ্তি জানা যাবে।
+       </p>
+       <p class="lead text-dark">
+           vortibd.com-এ অ্যাকাউন্ট খুলতে ১ মিনিটেরও কম সময় লাগে। আপনি বিনামূল্যে অ্যাকাউন্ট সাইন আপ করতে পারেন এবং প্রতিবছরই ভর্তি-বিজ্ঞপ্তি চলাকালীন সময়ে সহজেই আপনার সন্তানের ভর্তির আবেদন করতে পারেন।
+       </p>
+       <p class="lead text-dark">
+           vortibd.com কোনো বিশেষ শ্রেণীর শিক্ষা প্রতিষ্ঠানের জন্য বিশেষায়িত নয় – এখানে যেকোন স্কুল/কলেজ/বিশ্ববিদ্যালয়/মাদ্রাসা অনলাইনে ভর্তি কার্যক্রম চালু করার জন্য বিনামূল্যে vortibd.com-এ নিবন্ধন করতে পারবেন। শিক্ষা প্রতিষ্ঠানের নিবন্ধন করার বিষয়ে আমরা সকল প্রকার সহযোগীতা করে থাকি । সাহায্যের জন্য ০১৭৯১৩৫০২৬৮ নম্বরে যোগাযোগ করুন।
+       </p>
+       <p class="lead text-dark">
+           ভর্তির আবেদন ফরমের মূল্য যেকোন মোবাইল ব্যাংকিং, ভিসা/মাস্টার/অ্যামেক্স কার্ড অথবা নির্দিষ্ট ব্যাংকের ইন্টারনেট ব্যাংকিং-এর মাধ্যমে পরিশোধ করা যায়।
+       </p>
+    </div>
+       <div class="col-md-4">
+          <div class="card mt-4">
+                        <div class="card-header p-4 bg-primary">
+                            <h4 class="text-white text-center mb-0 mt-0">Login</h4>
+                        </div>
+                        <div class="card-body">
+                            <form action="{% url 'home_login' %}" method="POST" novalidate class="p-2">
+                                {% csrf_token %}
+
+                                {{form|crispy}}
+
+                                <div class="form-group mb-4">
+                                    <div class="checkbox checkbox-success">
+                                       <a href="{% url 'accounts:password_reset' %}" class="text-muted float-right d-block">Forgot your password?</a>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row text-center mt-4 mb-4">
+                                    <div class="col-12">
+                                        <button class="btn btn-md btn-block btn-primary waves-effect waves-light" type="submit">Sign In</button>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row mb-0">
+                                    <div class="col-sm-12 text-center">
+                                        <p class="text-muted mb-0">Don't have an account? <a href="{% url 'accounts:register' %}" class="text-dark m-l-5"><b>Sign Up</b></a></p>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                        <!-- end card-body -->
+                    </div>
+       </div>
+    </div>
+
+
+{% endblock content %}

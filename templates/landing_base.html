@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Addmission Site" name="description" />
+    <meta content="Mahmudul Hassan" name="author" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>
+        {% block title %}
+            VortiBD
+        {% endblock title %}
+    </title>
+    <link rel="shortcut icon" href="assets/images/favicon.ico">
+    {% include 'partials/applicant/_css.html' %}
+    {% block style %}
+
+    {% endblock style %}
+</head>
+<body class="authentication-page">
+
+    {% include 'partials/applicant/_landing_nav.html' %}
+
+    <div class="account-pages my-5">
+
+        <div class="container">
+            {% include 'partials/_alert.html' %}
+            {% block content %}
+
+            {% endblock content %}
+        </div>
+
+    </div>
+
+    {% include 'partials/applicant/_js.html' %}
+</body>
+</html>

@@ -12,7 +12,7 @@
         {% endblock title %}
     </title>
     <link rel="shortcut icon" href="assets/images/favicon.ico">
-    {% include 'partials/_css.html' %}
+    {% include 'partials/applicant/_css.html' %}
     {% block style %}
 
     {% endblock style %}
@@ -20,11 +20,11 @@
 <body>
     <div id="wrapper">
         <!-- Topbar Start -->
-        {% include 'partials/_topbar.html' %}
+        {% include 'partials/applicant/_topbar.html' %}
         <!-- end Topbar -->
 
         <!--  Left Sidebar Start -->
-        {% include 'partials/_sidebar.html' %}
+        {% include 'partials/applicant/_sidebar.html' %}
         <!-- Left Sidebar End -->
 
         <!-- Start Page Content here -->
@@ -34,8 +34,9 @@
                     <div class="container-fluid">
                         <!-- start page title -->
                         <div class="row">
-                            <div class="col-12">
-                                {% include 'partials/_breadcrumb.html' %}
+                            <div class="col-md-12 mt-2">
+                                {% include 'partials/_alert.html' %}
+                                {% include 'partials/applicant/_breadcrumb.html' %}
                                 {% block content %}
 
                                 {% endblock content %}
@@ -47,12 +48,12 @@
                 </div>
                 <!-- end content -->
                 <!-- Footer Start -->
-                {% include 'partials/_footer.html' %}
+                {% include 'partials/applicant/_footer.html' %}
                 <!-- end Footer -->
             </div>
         <!-- End Page content -->
     </div>
 
-    {% include 'partials/_js.html' %}
+    {% include 'partials/applicant/_js.html' %}
 </body>
 </html>

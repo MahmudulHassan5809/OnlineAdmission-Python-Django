@@ -1,0 +1,52 @@
+{% extends "landing_base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    {{title}}
+{% endblock title %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6 col-xl-6">
+                        <div class="card mt-4">
+                            <div class="card-header text-center p-4 bg-primary">
+                                <h4 class="text-white mb-0 mt-0">VortiBd.com</h4>
+                                <h5 class="text-white font-13 mb-0">Register online today, Its'free!</h5>
+                            </div>
+                            <div class="card-body">
+                                <form action="{% url 'accounts:register' %}" method="POST" novalidate class="p-2">
+                                    {% csrf_token %}
+
+                                    {{signup_form|crispy}}
+
+                                    <div class="form-group mb-4">
+                                        <div class="checkbox checkbox-success">
+                                            By Clicking Register I accept <strong><a href="javascript:void(0)">Terms and Conditions</a></strong>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group text-right mt-4 mb-4">
+                                        <div class="col-12">
+                                            <button class="btn btn-md btn-primary waves-effect waves-light" type="submit">Register</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row mb-0">
+                                        <div class="col-sm-12 text-center">
+                                            <a href="pages-login.html">Already have account?</a>
+                                        </div>
+                                    </div>
+
+                                </form>
+
+                            </div>
+                            <!-- end card-body -->
+                        </div>
+                        <!-- end card -->
+
+                        <!-- end row -->
+
+                    </div>
+</div>
+{% endblock content %}

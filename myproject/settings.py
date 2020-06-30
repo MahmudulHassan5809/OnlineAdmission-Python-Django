@@ -21,6 +21,11 @@ ALLOWED_HOSTS = ['127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
+    # Apps
+    'accounts',
+    'applications',
+    'settings',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -35,6 +40,7 @@ INSTALLED_APPS = [
 
 SITE_ID = 1
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+AUTH_USER_MODEL = 'accounts.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -97,6 +103,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+LOGIN_REDIRECT_URL = 'accounts:login_success'
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
@@ -134,3 +142,10 @@ MEDIA_URL = '/media/'
 MESSAGE_TAGS = {
     messages.ERROR: 'danger',
 }
+
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'mahmudul.hassan240@gmail.com'
+EMAIL_HOST_PASSWORD = 'hmcdhmoeeajppomw'
+EMAIL_PORT = 587
