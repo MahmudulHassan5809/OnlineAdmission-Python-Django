@@ -1,0 +1,142 @@
+{% extends "applicant_base.html" %}
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}
+    {{title}}
+{% endblock title %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="text-center">
+                        Create Applicant Profile (* চিহ্নিত ফিল্ড গুলো অবশ্যই পূরণীয় )
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <form action="" method="post" novalidate enctype="multipart/form-data">{% csrf_token %}
+                        {{ form.student_name|as_crispy_field }}
+                        {{ form.father_name|as_crispy_field }}
+                        <div class="form-row">
+                           <div class="col-6">
+                               {{ form.father_occupation|as_crispy_field }}
+                           </div>
+                           <div class="col-6">
+                               {{ form.guardian_income|as_crispy_field }}
+                           </div>
+                        </div>
+                        {{ form.mother_name|as_crispy_field }}
+                        {{ form.mother_occupation|as_crispy_field }}
+                        {{ form.present_address|as_crispy_field }}
+                        {{ form.permanent_address|as_crispy_field }}
+
+                        <div class="form-row">
+                           <div class="col-6">
+                               {{ form.contact_number|as_crispy_field }}
+                           </div>
+                           <div class="col-6">
+                               {{ form.email_address|as_crispy_field }}
+                           </div>
+                        </div>
+
+                        <div class="form-row">
+                           <div class="col-6">
+                               {{ form.birth_date|as_crispy_field }}
+                           </div>
+                           <div class="col-6">
+                               {{ form.birth_id|as_crispy_field }}
+                           </div>
+                        </div>
+
+                        <div class="form-row">
+                           <div class="col-6">
+                               {{ form.gender|as_crispy_field }}
+                           </div>
+                           <div class="col-6">
+                               {{ form.height|as_crispy_field }}
+                           </div>
+                        </div>
+
+                        <div class="form-row">
+                           <div class="col-6">
+                               {{ form.religion|as_crispy_field }}
+                           </div>
+                           <div class="col-6">
+                               {{ form.blood_group|as_crispy_field }}
+                           </div>
+                        </div>
+
+                        <div class="form-row">
+                           <div class="col-6">
+                               {{ form.freedom_fighter_quota|as_crispy_field }}
+                           </div>
+                           <div class="col-6">
+                               {{ form.is_autism|as_crispy_field }}
+                           </div>
+                        </div>
+
+                        <div class="form-row">
+                           <div class="col-6">
+                               {{ form.local_guardian_name|as_crispy_field }}
+                           </div>
+                           <div class="col-6">
+                               {{ form.relation_with_applicant|as_crispy_field }}
+                           </div>
+                        </div>
+
+                        {{ form.student_pic|as_crispy_field }}
+
+                        <hr>
+                        <h5 class="lead text-dark">Add Previous Education History</h5>
+                        <hr>
+                        <table class="table">
+                            {{ preveducation.management_form }}
+
+                            {% for form in preveducation.forms %}
+                                {% if forloop.first %}
+                                    <thead>
+                                    <tr>
+                                        {% for field in form.visible_fields %}
+                                            <th>{{ field.label|capfirst }}</th>
+                                        {% endfor %}
+                                    </tr>
+                                    </thead>
+                                {% endif %}
+                                <tr class="{% cycle "row1" "row2" %} formset_row">
+                                    {% for field in form.visible_fields %}
+                                        <td>
+                                            {# Include the hidden fields in the form #}
+                                            {% if forloop.first %}
+                                                {% for hidden in form.hidden_fields %}
+                                                    {{ hidden }}
+                                                {% endfor %}
+                                            {% endif %}
+                                            {{ field.errors.as_ul }}
+                                            {{ field|as_crispy_field }}
+                                        </td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        </table>
+                        <input type="submit" value="Save"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+
+{% block script %}
+    <script src="{% static 'js/jquery.formset.js' %}"></script>
+    <script type="text/javascript">
+        $('.formset_row').formset({
+            addText: 'Add Education',
+            deleteText: 'remove',
+            prefix: 'preveducation_set'
+        });
+    </script>
+{% endblock script %}

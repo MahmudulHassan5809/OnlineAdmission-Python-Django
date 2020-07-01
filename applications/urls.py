@@ -5,5 +5,10 @@ from . import views
 app_name = "applications"
 
 urlpatterns = [
-    #path('register/', views.RegisterView.as_view(), name="register"),
+    path('profile/', views.ApplicantProfileView.as_view(),
+         name="applicant_profile"),
+    path('create/profile/', views.CreateApplicantProfileView.as_view(),
+         name="create_applicant_profile"),
+    path('edit/profile/<int:pk>/', views.EditApplicantProfileView.as_view(),
+         name="edit_applicant_profile"),
 ]
