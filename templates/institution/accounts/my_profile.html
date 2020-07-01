@@ -1,0 +1,34 @@
+{% extends "institution_base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    {{title}}
+{% endblock title %}
+
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-10 mx-auto">
+            <div class="card mt-4">
+                <div class="card-header text-center p-4 bg-primary">
+                    <h4 class="text-white mb-0 mt-0">VortiBd.com</h4>
+                    <h5 class="text-white font-13 mb-0">Profile Of {{user.username|title}}</h5>
+                </div>
+
+                <div class="card-body">
+                    <form action="{% url 'accounts:my_profile' %}" method="POST" novalidate>
+                        {% csrf_token %}
+                        {{user_form|crispy}}
+                        {{profile_form|crispy}}
+
+                        <input type="submit" value="Save" class="btn btn-block btn-primary">
+                    </form>
+
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+{% endblock content %}

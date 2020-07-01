@@ -1,0 +1,32 @@
+{% extends "institution_base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}
+    {{title}}
+{% endblock title %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-10 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="float-left">
+                       Create Admission Session
+                    </h4>
+                    <a class="float-right btn btn-primary btn-sm" href="{% url 'institution:admission_session' %}">
+                        Back
+                    </a>
+                </div>
+                <div class="card-body">
+                    <form action="{% url 'institution:create_session' %}" method="POST" novalidate>
+                        {% csrf_token %}
+                        {{form|crispy}}
+
+                        <input type="submit" value="Save"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

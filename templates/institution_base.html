@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Addmission Site" name="description" />
+    <meta content="Mahmudul Hassan" name="author" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>
+        {% block title %}
+            VortiBD
+        {% endblock title %}
+    </title>
+    <link rel="shortcut icon" href="assets/images/favicon.ico">
+    {% include 'partials/institution/_css.html' %}
+    {% block style %}
+
+    {% endblock style %}
+</head>
+<body>
+    <div id="wrapper">
+        <!-- Topbar Start -->
+        {% include 'partials/institution/_topbar.html' %}
+        <!-- end Topbar -->
+
+        <!--  Left Sidebar Start -->
+        {% include 'partials/institution/_sidebar.html' %}
+        <!-- Left Sidebar End -->
+
+        <!-- Start Page Content here -->
+        <div class="content-page">
+                <div class="content">
+                    <!-- Start Content-->
+                    <div class="container-fluid">
+                        <!-- start page title -->
+                        <div class="row">
+                            <div class="col-md-12 mt-2">
+                                {% include 'partials/_alert.html' %}
+                                {% include 'partials/institution/_breadcrumb.html' %}
+                                {% block content %}
+
+                                {% endblock content %}
+                            </div>
+                        </div>
+                        <!-- end page title -->
+                    </div>
+                    <!-- end container-fluid -->
+                </div>
+                <!-- end content -->
+                <!-- Footer Start -->
+                {% include 'partials/institution/_footer.html' %}
+                <!-- end Footer -->
+            </div>
+        <!-- End Page content -->
+    </div>
+
+    {% include 'partials/institution/_js.html' %}
+
+    {% block script %}
+
+    {% endblock script %}
+</body>
+</html>

@@ -9,7 +9,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth import get_user_model
 from settings.models import ApplicationInstruction
-from .mixins import AictiveUserRequiredMixin, AictiveApplicantRequiredMixin
+from .mixins import AictiveUserRequiredMixin, AictiveApplicantRequiredMixin, AictiveInstitutionRequiredMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import SignUpForm, UserForm, ProfileForm
 from django.contrib.auth.views import LoginView
@@ -99,7 +99,7 @@ class MyProfileView(AictiveUserRequiredMixin, View):
             return render(request, 'applicant/accounts/my_profile.html', context)
         else:
             # Todo For University Holder
-            pass
+            return render(request, 'institution/accounts/my_profile.html', context)
 
     def post(self, request, *args, **kwargs):
         user_form = UserForm(request.POST,
@@ -123,7 +123,7 @@ class MyProfileView(AictiveUserRequiredMixin, View):
                 return render(request, 'applicant/accounts/my_profile.html', context)
             else:
                 # Todo For University Holder
-                pass
+                return render(request, 'institution/accounts/my_profile.html', context)
 
 
 class ChangePasswordView(AictiveUserRequiredMixin, View):
@@ -137,7 +137,7 @@ class ChangePasswordView(AictiveUserRequiredMixin, View):
             return render(request, 'applicant/accounts/change_password.html', context)
         else:
             # Todo For University Holder
-            pass
+            return render(request, 'institution/accounts/change_password.html', context)
 
     def post(self, request, *args, **kwargs):
         chanage_password_form = PasswordChangeForm(
@@ -156,11 +156,7 @@ class ChangePasswordView(AictiveUserRequiredMixin, View):
                 return render(request, 'applicant/accounts/change_password.html', context)
             else:
                 # Todo For University Holder
-                pass
-
-
-class LogoutView(AictiveUserRequiredMixin, View):
-    pass
+                return render(request, 'institution/accounts/change_password.html', context)
 
 
 # Login Redirect View
@@ -175,8 +171,24 @@ class LoginSuccess(View):
             # user is an admin
             return redirect("accounts:applicant_dashboard")
         else:
-            return redirect("accounts:applicant_dashboard")
+            return redirect("accounts:institution_dashboard")
 # Login Redirect View End
+
+
+# Institution Holder Views Start
+class InstitutionDashboardView(AictiveInstitutionRequiredMixin, View):
+    def get(self, request, *args, **kwrags):
+        user_obj = get_object_or_404(get_user_model(), id=request.user.id)
+        user_profile = user_obj.user_profile
+
+        context = {
+            'title': 'Institution Dashboard',
+            'user_obj': user_obj,
+            'user_profile': user_profile,
+        }
+
+        return render(request, 'institution/accounts/dashboard.html', context)
+# Institution Holder Views End
 
 
 # Applicant Holder Views Start

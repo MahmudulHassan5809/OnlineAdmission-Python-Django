@@ -14,13 +14,15 @@ urlpatterns = [
     path('change-password/', views.ChangePasswordView.as_view(),
          name="change_password"),
     path('logout/', auth_views.LogoutView.as_view(template_name='common/logout.html',
-        extra_context={
-            'title': 'Logout',
-        }), name="logout"),
+                                                  extra_context={
+                                                      'title': 'Logout',
+                                                  }), name="logout"),
 
 
     path('applicant/dashboard/',
          views.ApplicantDashboardView.as_view(), name="applicant_dashboard"),
+    path('institution/dashboard/',
+         views.InstitutionDashboardView.as_view(), name="institution_dashboard"),
 
     path('password_reset/', auth_views.PasswordResetView.as_view(success_url=reverse_lazy('accounts:password_reset_done')),
          name='password_reset'),
