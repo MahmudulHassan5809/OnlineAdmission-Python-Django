@@ -10,7 +10,7 @@ from .forms import CustomUserCreationForm, CustomUserChangeForm
 User = get_user_model()
 
 
-class ProfileInline(admin.StackedInline):
+class ProfileInline(admin.TabularInline):
     model = Profile
     extra = 0
 
@@ -18,8 +18,14 @@ class ProfileInline(admin.StackedInline):
 class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('email', 'username', 'password1', 'password2',)
+        }),
+    )
     model = User
-    inlines = [ProfileInline]
+    # inlines = [ProfileInline]
 
     list_display = ['email', 'username', 'first_name', 'last_name', 'is_staff']
 
@@ -37,7 +43,7 @@ class ProfileAdmin(admin.ModelAdmin):
     list_display = ["profile_name", "profile_pic_tag",
                     "phone_number", "user_email", "user_type", "email_confirmed", "active"]
 
-    search_fields = ('user__username', 'phone_number', 'user_email',)
+    search_fields = ('user__username', 'phone_number', 'user__email',)
     list_filter = ['active', 'email_confirmed', 'user_type']
     list_editable = ['active', 'email_confirmed']
     list_per_page = 20

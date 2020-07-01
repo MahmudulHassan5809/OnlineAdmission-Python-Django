@@ -16,10 +16,12 @@ class User(AbstractUser):
 
 
 # Create your models here.
+
+
 class Profile(models.Model):
     USER_CHOICES = (
         ('0', 'Admission Holder'),
-        ('1', 'University Holder'),
+        ('1', 'Institute Holder'),
     )
 
     user = models.OneToOneField(

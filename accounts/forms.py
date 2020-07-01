@@ -3,6 +3,7 @@ from django.forms import FileInput
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model
+from django.utils.translation import ugettext_lazy as _
 from .models import Profile
 from django.contrib.auth import authenticate
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
@@ -12,6 +13,11 @@ class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = get_user_model()
         fields = ('email', 'username',)
+
+    def __init__(self, *args, **kwargs):
+        super(CustomUserCreationForm, self).__init__(*args, **kwargs)
+        self.fields['email'] = forms.EmailField(
+            label=_("E-mail"), max_length=75)
 
 
 class CustomUserChangeForm(UserChangeForm):
@@ -26,7 +32,7 @@ class SignUpForm(UserCreationForm):
 
     class Meta:
         model = get_user_model()
-        fields = ('username','email', 'phone_number',
+        fields = ('username', 'email', 'phone_number',
                   'password1', 'password2', )
         widgets = {
             'username': forms.TextInput(attrs={'placeholder': 'User Name'}),
