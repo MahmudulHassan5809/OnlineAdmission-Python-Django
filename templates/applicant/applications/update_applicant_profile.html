@@ -17,7 +17,8 @@
                     </h4>
                 </div>
                 <div class="card-body">
-                    <form action="{% url 'applications:create_applicant_profile' %}" method="post" novalidate enctype="multipart/form-data">{% csrf_token %}
+                    <form action="{% url 'applications:edit_applicant_profile' applicant_profile.id %}" method="POST" novalidate enctype="multipart/form-data">
+                        {% csrf_token %}
                         {{ form.student_name|as_crispy_field }}
                         {{ form.father_name|as_crispy_field }}
                         <div class="form-row">

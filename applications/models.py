@@ -73,7 +73,7 @@ class ApplicantPrevEducation(models.Model):
     )
     applicant = models.ForeignKey(
         ApplicantProfile, on_delete=models.CASCADE, related_name='applicant_pre_edu')
-    exam_name = models.CharField(max_length=10, choices=BOARD_CHOICES)
+    exam_name = models.CharField(max_length=10, choices=EXAM_CHOICES)
     board_name = models.CharField(max_length=10, choices=BOARD_CHOICES)
     institute_name = models.CharField(max_length=255)
     passing_year = models.IntegerField()

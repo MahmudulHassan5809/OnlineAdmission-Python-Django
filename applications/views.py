@@ -56,5 +56,38 @@ class CreateApplicantProfileView(AictiveApplicantRequiredMixin, generic.CreateVi
         return super(CreateApplicantProfileView, self).form_valid(form)
 
 
-class EditApplicantProfileView(AictiveApplicantRequiredMixin, View):
-    pass
+class EditApplicantProfileView(AictiveApplicantRequiredMixin, generic.UpdateView):
+    model = ApplicantProfile
+    context_object_name = 'applicant_profile'
+    form_class = ApplicantProfileForm
+    template_name = 'applicant/applications/update_applicant_profile.html'
+    success_url = reverse_lazy('applications:applicant_profile')
+
+    def get_context_data(self, **kwargs):
+        context = super(EditApplicantProfileView,
+                        self).get_context_data(**kwargs)
+        if self.request.POST:
+            context['preveducation'] = ApplicantPrevEducationFormSet(
+                self.request.POST, self.request.FILES, instance=self.object)
+        else:
+            query_set = ApplicantPrevEducation.objects.filter(
+                applicant=self.object)
+            print(query_set)
+            context['preveducation'] = ApplicantPrevEducationFormSet(
+                instance=self.object)
+
+        context['title'] = 'Update Applicant Profile'
+        return context
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        preveducation = context['preveducation']
+        with transaction.atomic():
+            self.object = form.save(commit=False)
+            self.object.owner = self.request.user
+            self.object.save()
+
+        if preveducation.is_valid():
+            preveducation.instance = self.object
+            preveducation.save()
+        return super(EditApplicantProfileView, self).form_valid(form)
