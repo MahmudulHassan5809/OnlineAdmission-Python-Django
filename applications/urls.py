@@ -11,4 +11,6 @@ urlpatterns = [
          name="create_applicant_profile"),
     path('edit/profile/<int:pk>/', views.EditApplicantProfileView.as_view(),
          name="edit_applicant_profile"),
+    path('delete/profile/<int:pk>/', views.DeleteApplicantProfileView.as_view(),
+         name="delete_applicant_profile"),
 ]

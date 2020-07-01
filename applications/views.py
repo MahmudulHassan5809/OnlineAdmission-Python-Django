@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.db import transaction
 from accounts.mixins import AictiveUserRequiredMixin, AictiveApplicantRequiredMixin
+from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import ApplicantPrevEducationFormSet, ApplicantProfileForm
 from django.contrib.auth import get_user_model
@@ -25,10 +27,11 @@ class ApplicantProfileView(generic.ListView):
         return context
 
 
-class CreateApplicantProfileView(AictiveApplicantRequiredMixin, generic.CreateView):
+class CreateApplicantProfileView(SuccessMessageMixin, AictiveApplicantRequiredMixin, generic.CreateView):
     model = ApplicantProfile
     form_class = ApplicantProfileForm
     template_name = 'applicant/applications/create_applicant_profile.html'
+    success_message = "Applicant Profile was created successfully"
     success_url = reverse_lazy('applications:applicant_profile')
 
     def get_context_data(self, **kwargs):
@@ -56,10 +59,11 @@ class CreateApplicantProfileView(AictiveApplicantRequiredMixin, generic.CreateVi
         return super(CreateApplicantProfileView, self).form_valid(form)
 
 
-class EditApplicantProfileView(AictiveApplicantRequiredMixin, generic.UpdateView):
+class EditApplicantProfileView(SuccessMessageMixin, AictiveApplicantRequiredMixin, generic.UpdateView):
     model = ApplicantProfile
     context_object_name = 'applicant_profile'
     form_class = ApplicantProfileForm
+    success_message = "Applicant Profile was updated successfully"
     template_name = 'applicant/applications/update_applicant_profile.html'
     success_url = reverse_lazy('applications:applicant_profile')
 
@@ -91,3 +95,19 @@ class EditApplicantProfileView(AictiveApplicantRequiredMixin, generic.UpdateView
             preveducation.instance = self.object
             preveducation.save()
         return super(EditApplicantProfileView, self).form_valid(form)
+
+
+class DeleteApplicantProfileView(SuccessMessageMixin, AictiveApplicantRequiredMixin, generic.edit.DeleteView):
+    model = ApplicantProfile
+    template_name = 'applicant/applications/delete_applicant_profile.html'
+    success_message = "Applicant Profile was deleted successfully"
+    success_url = reverse_lazy('applications:applicant_profile')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Delete Profile'
+        return context
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super(DeleteApplicantProfileView, self).delete(request, *args, **kwargs)
