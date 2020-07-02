@@ -39,5 +39,24 @@ class AdmissionSession(models.Model):
     year = models.IntegerField()
     status = models.BooleanField()
 
+    class Meta:
+        verbose_name = 'AdmissionSession'
+        verbose_name_plural = '2. AdmissionSession'
+
     def __str__(self):
         return self.session_name
+
+
+class InstitutionTransactionMethod(models.Model):
+    institute = models.ForeignKey(
+        InstitutionProfile, on_delete=models.CASCADE, related_name='institute_transaction')
+    method_name = models.CharField(max_length=50)
+    account_number = models.CharField(max_length=50)
+    image = models.ImageField(upload_to="transaction/")
+
+    class Meta:
+        verbose_name = 'Institution Transaction'
+        verbose_name_plural = '3. Institution Transaction'
+
+    def __str__(self):
+        return self.method_name
