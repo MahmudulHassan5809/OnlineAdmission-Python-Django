@@ -13,4 +13,9 @@ urlpatterns = [
          views.DeleteInstitutionSession.as_view(), name="delete_session"),
     path('admission-session/edit/<int:pk>/',
          views.UpdateInstitutionSession.as_view(), name="update_session"),
+
+    path('institute/all/',
+         views.MyInstituteView.as_view(), name="my_institute"),
+    path('institute/edit/<int:pk>/',
+         views.MyInstituteEditView.as_view(), name="my_institute_edit"),
 ]

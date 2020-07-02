@@ -18,14 +18,26 @@ class AdmissionSessionView(AictiveInstitutionRequiredMixin, generic.ListView):
     template_name = 'institution/session/adminssion_session.html'
 
     def get_queryset(self):
-        qs = AdmissionSession.objects.filter(
-            institute=self.request.user.user_institute).first()
+        try:
+            qs = AdmissionSession.objects.filter(
+                institute=self.request.user.user_institute).first()
+        except Exception as e:
+            qs = None
         return qs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Admission Session'
         return context
+
+    def render_to_response(self, context):
+        try:
+            qs = AdmissionSession.objects.filter(
+                institute=self.request.user.user_institute).first()
+        except Exception as e:
+            messages.info(self.request, 'You Dont Have Any Institute')
+            return redirect('accounts:login_success')
+        return super().render_to_response(context)
 
 
 class CreateInstitutionSession(SuccessMessageMixin, AictiveInstitutionRequiredMixin, generic.CreateView):
@@ -44,9 +56,17 @@ class CreateInstitutionSession(SuccessMessageMixin, AictiveInstitutionRequiredMi
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.institute = self.request.user.user_institute
-        # self.object.save()
+        self.object.save()
 
         return super(CreateInstitutionSession, self).form_valid(form)
+
+    def render_to_response(self, context):
+        qs = AdmissionSession.objects.filter(
+            institute=self.request.user.user_institute).first()
+        if qs:
+            messages.info(self.request, 'Please Update Previous Data')
+            return redirect('institution:admission_session')
+        return super().render_to_response(context)
 
 
 class UpdateInstitutionSession(SuccessMessageMixin, AictiveInstitutionRequiredMixin, generic.UpdateView):
@@ -66,7 +86,7 @@ class UpdateInstitutionSession(SuccessMessageMixin, AictiveInstitutionRequiredMi
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.institute = self.request.user.user_institute
-        # self.object.save()
+        self.object.save()
 
         return super(UpdateInstitutionSession, self).form_valid(form)
 
@@ -85,3 +105,33 @@ class DeleteInstitutionSession(SuccessMessageMixin, AictiveInstitutionRequiredMi
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, self.success_message)
         return super(DeleteInstitutionSession, self).delete(request, *args, **kwargs)
+
+
+class MyInstituteView(AictiveInstitutionRequiredMixin, generic.ListView):
+    model = InstitutionProfile
+    context_object_name = 'my_institute'
+    template_name = 'institution/institute/my_institute.html'
+
+    def get_queryset(self):
+        qs = self.request.user.user_institute
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'My Institute'
+        return context
+
+
+class MyInstituteEditView(SuccessMessageMixin, AictiveInstitutionRequiredMixin, generic.edit.UpdateView):
+    model = InstitutionProfile
+    context_object_name = 'my_institute'
+    fields = ('institute_name', 'institute_location',
+              'institute_code', 'institute_pic')
+    template_name = 'institution/institute/edit_my_institute.html'
+    success_message = "Institute was updated successfully"
+    success_url = reverse_lazy('institution:my_institute')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Edit My Institute'
+        return context

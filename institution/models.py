@@ -21,18 +21,18 @@ class InstitutionProfile(models.Model):
         return f"{self.user.username} owns {self.institute_name}"
 
 
-class SingleInstanceMixin(object):
-    """Makes sure that no more than one instance of a given model is created."""
+# class SingleInstanceMixin(object):
+#     """Makes sure that no more than one instance of a given model is created."""
 
-    def clean(self):
-        model = self.__class__
-        if (model.objects.count() > 0 and self.id != model.objects.get().id):
-            raise ValidationError(
-                "Can only create 1 %s instance Please Edit The Previous One" % model.__name__)
-        super(SingleInstanceMixin, self).clean()
+#     def clean(self):
+#         model = self.__class__
+#         if (model.objects.count() > 0 and self.id != model.objects.get().id):
+#             raise ValidationError(
+#                 "Can only create 1 %s instance Please Edit The Previous One" % model.__name__)
+#         super(SingleInstanceMixin, self).clean()
 
 
-class AdmissionSession(SingleInstanceMixin, models.Model):
+class AdmissionSession(models.Model):
     institute = models.OneToOneField(
         InstitutionProfile, on_delete=models.CASCADE, related_name='institute_session')
     session_name = models.CharField(max_length=200)
