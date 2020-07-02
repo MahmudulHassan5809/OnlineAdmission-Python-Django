@@ -15,7 +15,9 @@ class InstitutionProfile(models.Model):
     institute_name = models.CharField(max_length=255)
     institute_location = models.CharField(max_length=255)
     institute_code = models.CharField(max_length=50)
-    gender = models.CharField(max_length=10, choices=GENDER_CHOICES,default='3')
+    application_fee = models.FloatField()
+    gender = models.CharField(
+        max_length=10, choices=GENDER_CHOICES, default='3')
     institute_pic = models.ImageField(upload_to="institution")
     active = models.BooleanField(default=True)
 
@@ -24,7 +26,7 @@ class InstitutionProfile(models.Model):
         verbose_name_plural = '1. InstitutionProfile'
 
     def __str__(self):
-        return f"{self.user.username} owns {self.institute_name}"
+        return self.institute_name
 
 
 # class SingleInstanceMixin(object):

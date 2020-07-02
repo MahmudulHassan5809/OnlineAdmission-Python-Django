@@ -125,7 +125,7 @@ class MyInstituteView(AictiveInstitutionRequiredMixin, generic.ListView):
 class MyInstituteEditView(SuccessMessageMixin, AictiveInstitutionRequiredMixin, generic.edit.UpdateView):
     model = InstitutionProfile
     context_object_name = 'my_institute'
-    fields = ('institute_name', 'institute_location',
+    fields = ('institute_name','application_fee', 'institute_location',
               'institute_code', 'gender', 'institute_pic')
     template_name = 'institution/institute/edit_my_institute.html'
     success_message = "Institute was updated successfully"

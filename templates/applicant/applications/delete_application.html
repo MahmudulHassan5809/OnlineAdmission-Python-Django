@@ -1,24 +1,21 @@
 {% extends "applicant_base.html" %}
 
-{% load crispy_forms_tags %}
-
 {% block title %}
     {{title}}
 {% endblock title %}
+
 
 {% block content %}
     <div class="row">
         <div class="col-md-10 mx-auto">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="float-left">Choose Institute</h4>
+                    <h3 class="lead text-dark">Delete Application</h3>
                 </div>
                 <div class="card-body">
-                    <form action="{% url 'applications:apply' applicant_id %}" method="POST" novalidate>
-                        {% csrf_token %}
-                        {{application_form|crispy}}
-
-                        <input type="submit" value="Choose">
+                    <form method="post">{% csrf_token %}
+                        <p>Are you sure you want to delete "{{ object }}"?</p>
+                        <input type="submit" value="Confirm" class="btn btn-danger">
                     </form>
                 </div>
             </div>
