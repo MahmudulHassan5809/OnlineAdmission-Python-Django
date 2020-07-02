@@ -12,7 +12,7 @@
                     <h4 class="float-left">
                         Applicant Profile(s)
                     </h4>
-                    <a href="{% url 'applications:create_applicant_profile' %}" class="float-right btn btn-sm btn-info">
+                    <a href="{% url 'applicant:create_applicant_profile' %}" class="float-right btn btn-sm btn-info">
                         <i class="fas fa-plus">Add Another Profile</i>
                     </a>
                 </div>
@@ -46,13 +46,13 @@
                                     <a href="" class="btn-block btn btn-info btn-sm">
                                         <i class="fas fa-redo mr-1"></i> Application Status
                                     </a>
-                                    <a href="" class="btn-block btn btn-primary btn-sm">
+                                    <a href="{% url 'applications:apply' profile.id %}" class="btn-block btn btn-primary btn-sm">
                                         <i class="far fa-paper-plane mr-1"></i> Apply Now
                                     </a>
-                                    <a href="{% url 'applications:edit_applicant_profile' profile.id %}" class="btn-block btn btn-success btn-sm">
+                                    <a href="{% url 'applicant:edit_applicant_profile' profile.id %}" class="btn-block btn btn-success btn-sm">
                                         <i class="fas fa-edit mr-1"></i> Edit Profile
                                     </a>
-                                    <a href="{% url 'applications:delete_applicant_profile' profile.id %}" class="btn-block btn btn-danger btn-sm">
+                                    <a href="{% url 'applicant:delete_applicant_profile' profile.id %}" class="btn-block btn btn-danger btn-sm">
                                         <i class="fas fa-trash mr-1"></i> Delete Profile
                                     </a>
                                 </td>

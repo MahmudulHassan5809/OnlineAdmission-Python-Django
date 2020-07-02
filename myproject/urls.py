@@ -10,6 +10,7 @@ urlpatterns = [
     path('accounts/', include('accounts.urls', namespace='accounts')),
     path('applicant/', include('applicant.urls', namespace='applicant')),
     path('institution/', include('institution.urls', namespace='institution')),
+    path('applications/', include('applications.urls', namespace='applications')),
     path('', HomeLoginView.as_view(), name="home_login"),
 ]
 

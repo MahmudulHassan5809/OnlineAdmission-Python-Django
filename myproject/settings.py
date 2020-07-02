@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     # Apps
     'accounts',
     'applicant',
+    'applications',
     'institution',
     'settings',
 
