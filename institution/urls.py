@@ -18,4 +18,14 @@ urlpatterns = [
          views.MyInstituteView.as_view(), name="my_institute"),
     path('institute/edit/<int:pk>/',
          views.MyInstituteEditView.as_view(), name="my_institute_edit"),
+
+
+    path('transaction-method/',
+         views.TransactionMethodView.as_view(), name="transaction_method"),
+    path('transaction-method/add/',
+         views.AddTransactionMethodView.as_view(), name="add_transaction_method"),
+    path('transaction-method/edit/<int:pk>/',
+         views.EditTransactionMethodView.as_view(), name="edit_transaction_method"),
+    path('transaction-method/delete/<int:pk>/',
+         views.DeleteTransactionMethodView.as_view(), name="delete_transaction_method"),
 ]

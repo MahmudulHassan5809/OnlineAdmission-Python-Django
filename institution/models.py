@@ -5,11 +5,17 @@ from django.core.exceptions import ValidationError
 
 
 class InstitutionProfile(models.Model):
+    GENDER_CHOICES = (
+        ('1', 'Male'),
+        ('2', 'Female'),
+        ('3', 'Both'),
+    )
     user = models.OneToOneField(
         get_user_model(), on_delete=models.CASCADE, related_name='user_institute')
     institute_name = models.CharField(max_length=255)
     institute_location = models.CharField(max_length=255)
     institute_code = models.CharField(max_length=50)
+    gender = models.CharField(max_length=10, choices=GENDER_CHOICES,default='3')
     institute_pic = models.ImageField(upload_to="institution")
     active = models.BooleanField(default=True)
 
@@ -52,7 +58,6 @@ class InstitutionTransactionMethod(models.Model):
         InstitutionProfile, on_delete=models.CASCADE, related_name='institute_transaction')
     method_name = models.CharField(max_length=50)
     account_number = models.CharField(max_length=50)
-    image = models.ImageField(upload_to="transaction/")
 
     class Meta:
         verbose_name = 'Institution Transaction'

@@ -4,11 +4,11 @@ from accounts.mixins import AictiveUserRequiredMixin, AictiveApplicantRequiredMi
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import AdmissionSessionForm
+from .forms import AdmissionSessionForm, InstitutionTransactionMethodForm
 from django.views import View, generic
 from django.contrib.auth import get_user_model
 from applications.models import ApplicantPrevEducation, ApplicantProfile
-from .models import InstitutionProfile, AdmissionSession
+from .models import InstitutionProfile, AdmissionSession, InstitutionTransactionMethod
 # Create your views here.
 
 
@@ -126,7 +126,7 @@ class MyInstituteEditView(SuccessMessageMixin, AictiveInstitutionRequiredMixin, 
     model = InstitutionProfile
     context_object_name = 'my_institute'
     fields = ('institute_name', 'institute_location',
-              'institute_code', 'institute_pic')
+              'institute_code','gender', 'institute_pic')
     template_name = 'institution/institute/edit_my_institute.html'
     success_message = "Institute was updated successfully"
     success_url = reverse_lazy('institution:my_institute')
@@ -135,3 +135,81 @@ class MyInstituteEditView(SuccessMessageMixin, AictiveInstitutionRequiredMixin, 
         context = super().get_context_data(**kwargs)
         context['title'] = 'Edit My Institute'
         return context
+
+
+class TransactionMethodView(AictiveInstitutionRequiredMixin, generic.ListView):
+    model = InstitutionTransactionMethod
+    context_object_name = 'all_transaction_method'
+    template_name = 'institution/transaction/all_transaction_method.html'
+
+    def get_queryset(self):
+        try:
+            qs = InstitutionTransactionMethod.objects.filter(
+                institute=self.request.user.user_institute)
+        except Exception as e:
+            qs = None
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Transaction Method'
+        return context
+
+
+class AddTransactionMethodView(SuccessMessageMixin, AictiveInstitutionRequiredMixin, generic.CreateView):
+    model = InstitutionTransactionMethod
+    form_class = InstitutionTransactionMethodForm
+    template_name = 'institution/transaction/create_transaction_method.html'
+    success_message = "Transaction Method was created successfully"
+    success_url = reverse_lazy('institution:transaction_method')
+
+    def get_context_data(self, **kwargs):
+        context = super(AddTransactionMethodView,
+                        self).get_context_data(**kwargs)
+        context['title'] = 'Create Transaction Method'
+        return context
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.institute = self.request.user.user_institute
+        self.object.save()
+
+        return super(AddTransactionMethodView, self).form_valid(form)
+
+
+class EditTransactionMethodView(SuccessMessageMixin, AictiveInstitutionRequiredMixin, generic.edit.UpdateView):
+    model = InstitutionTransactionMethod
+    context_object_name = 'transaction_method'
+    form_class = InstitutionTransactionMethodForm
+    template_name = 'institution/transaction/update_transaction_method.html'
+    success_message = "Transaction Method was updated successfully"
+    success_url = reverse_lazy('institution:transaction_method')
+
+    def get_context_data(self, **kwargs):
+        context = super(EditTransactionMethodView,
+                        self).get_context_data(**kwargs)
+        context['title'] = 'Update Transaction Method'
+        return context
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.institute = self.request.user.user_institute
+        self.object.save()
+
+        return super(EditTransactionMethodView, self).form_valid(form)
+
+
+class DeleteTransactionMethodView(SuccessMessageMixin, AictiveInstitutionRequiredMixin, generic.edit.DeleteView):
+    model = InstitutionTransactionMethod
+    template_name = 'institution/transaction/delete_transaction_method.html'
+    success_message = "Transaction Method was deleted successfully"
+    success_url = reverse_lazy('institution:transaction_method')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Delete Transaction Method'
+        return context
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super(DeleteTransactionMethodView, self).delete(request, *args, **kwargs)
