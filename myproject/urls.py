@@ -8,7 +8,7 @@ from accounts.views import HomeLoginView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls', namespace='accounts')),
-    path('applications/', include('applications.urls', namespace='applications')),
+    path('applicant/', include('applicant.urls', namespace='applicant')),
     path('institution/', include('institution.urls', namespace='institution')),
     path('', HomeLoginView.as_view(), name="home_login"),
 ]

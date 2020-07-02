@@ -7,7 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import AdmissionSessionForm, InstitutionTransactionMethodForm
 from django.views import View, generic
 from django.contrib.auth import get_user_model
-from applications.models import ApplicantPrevEducation, ApplicantProfile
+from applicant.models import ApplicantPrevEducation, ApplicantProfile
 from .models import InstitutionProfile, AdmissionSession, InstitutionTransactionMethod
 # Create your views here.
 
@@ -126,7 +126,7 @@ class MyInstituteEditView(SuccessMessageMixin, AictiveInstitutionRequiredMixin, 
     model = InstitutionProfile
     context_object_name = 'my_institute'
     fields = ('institute_name', 'institute_location',
-              'institute_code','gender', 'institute_pic')
+              'institute_code', 'gender', 'institute_pic')
     template_name = 'institution/institute/edit_my_institute.html'
     success_message = "Institute was updated successfully"
     success_url = reverse_lazy('institution:my_institute')

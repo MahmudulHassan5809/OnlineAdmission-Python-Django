@@ -15,7 +15,7 @@ from django.views import View, generic
 class ApplicantProfileView(generic.ListView):
     model = ApplicantProfile
     context_object_name = 'all_applicant_profile'
-    template_name = 'applicant/applications/all_applicant_profile.html'
+    template_name = 'applicant/applicant/all_applicant_profile.html'
 
     def get_queryset(self):
         qs = ApplicantProfile.objects.filter(owner=self.request.user)
@@ -30,9 +30,9 @@ class ApplicantProfileView(generic.ListView):
 class CreateApplicantProfileView(SuccessMessageMixin, AictiveApplicantRequiredMixin, generic.CreateView):
     model = ApplicantProfile
     form_class = ApplicantProfileForm
-    template_name = 'applicant/applications/create_applicant_profile.html'
+    template_name = 'applicant/applicant/create_applicant_profile.html'
     success_message = "Applicant Profile was created successfully"
-    success_url = reverse_lazy('applications:applicant_profile')
+    success_url = reverse_lazy('applicant:applicant_profile')
 
     def get_context_data(self, **kwargs):
         context = super(CreateApplicantProfileView,
@@ -64,8 +64,8 @@ class EditApplicantProfileView(SuccessMessageMixin, AictiveApplicantRequiredMixi
     context_object_name = 'applicant_profile'
     form_class = ApplicantProfileForm
     success_message = "Applicant Profile was updated successfully"
-    template_name = 'applicant/applications/update_applicant_profile.html'
-    success_url = reverse_lazy('applications:applicant_profile')
+    template_name = 'applicant/applicant/update_applicant_profile.html'
+    success_url = reverse_lazy('applicant:applicant_profile')
 
     def get_context_data(self, **kwargs):
         context = super(EditApplicantProfileView,
@@ -99,9 +99,9 @@ class EditApplicantProfileView(SuccessMessageMixin, AictiveApplicantRequiredMixi
 
 class DeleteApplicantProfileView(SuccessMessageMixin, AictiveApplicantRequiredMixin, generic.edit.DeleteView):
     model = ApplicantProfile
-    template_name = 'applicant/applications/delete_applicant_profile.html'
+    template_name = 'applicant/applicant/delete_applicant_profile.html'
     success_message = "Applicant Profile was deleted successfully"
-    success_url = reverse_lazy('applications:applicant_profile')
+    success_url = reverse_lazy('applicant:applicant_profile')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
