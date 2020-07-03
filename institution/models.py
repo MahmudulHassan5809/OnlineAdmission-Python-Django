@@ -58,10 +58,16 @@ class InstitutionSubject(models.Model):
 
 
 class AdmissionSession(models.Model):
+    LEVEL_CHOICES = (
+        ('1', 'Bachelor'),
+        ('2', 'Masters'),
+        ('3', 'Bachelor & Masters')
+    )
     institute = models.OneToOneField(
         InstitutionProfile, on_delete=models.CASCADE, related_name='institute_session')
     session_name = models.CharField(max_length=200)
     year = models.IntegerField()
+    level = models.CharField(max_length=50, choices=LEVEL_CHOICES,default='3')
     status = models.BooleanField()
 
     class Meta:

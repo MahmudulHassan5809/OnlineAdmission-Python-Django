@@ -67,8 +67,17 @@ class ApplyApplicationView(AictiveApplicantRequiredMixin, View):
 
             check_session = AdmissionSession.objects.filter(
                 institute=institute_obj, status=True).first()
+            print(check_session.get_level_display(), '=======')
             if not check_session:
                 messages.error(request, f"Now Admission Is Closed For {institute_obj.institute_name}")
+                return redirect('applications:apply', applicant_obj.id)
+
+            if check_session.level == '1' and request.POST.get('level') == '2':
+                messages.error(request, f"{institute_obj.institute_name} Only Avialable For Bachelor Admission")
+                return redirect('applications:apply', applicant_obj.id)
+
+            if check_session.level == '2' and request.POST.get('level') == '1':
+                messages.error(request, f"{institute_obj.institute_name} Only Avialable For Masters Admission")
                 return redirect('applications:apply', applicant_obj.id)
 
             subject_obj = get_object_or_404(
