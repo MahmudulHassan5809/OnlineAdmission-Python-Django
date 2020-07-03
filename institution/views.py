@@ -4,11 +4,11 @@ from accounts.mixins import AictiveUserRequiredMixin, AictiveApplicantRequiredMi
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import AdmissionSessionForm, InstitutionTransactionMethodForm
+from .forms import AdmissionSessionForm, InstitutionTransactionMethodForm, InstitutionSubjectForm
 from django.views import View, generic
 from django.contrib.auth import get_user_model
 from applicant.models import ApplicantPrevEducation, ApplicantProfile
-from .models import InstitutionProfile, AdmissionSession, InstitutionTransactionMethod
+from .models import InstitutionProfile, AdmissionSession, InstitutionTransactionMethod, InstitutionSubject
 # Create your views here.
 
 
@@ -125,7 +125,7 @@ class MyInstituteView(AictiveInstitutionRequiredMixin, generic.ListView):
 class MyInstituteEditView(SuccessMessageMixin, AictiveInstitutionRequiredMixin, generic.edit.UpdateView):
     model = InstitutionProfile
     context_object_name = 'my_institute'
-    fields = ('institute_name','application_fee', 'institute_location',
+    fields = ('institute_name', 'application_fee', 'institute_location',
               'institute_code', 'gender', 'institute_pic')
     template_name = 'institution/institute/edit_my_institute.html'
     success_message = "Institute was updated successfully"
@@ -213,3 +213,72 @@ class DeleteTransactionMethodView(SuccessMessageMixin, AictiveInstitutionRequire
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, self.success_message)
         return super(DeleteTransactionMethodView, self).delete(request, *args, **kwargs)
+
+
+class MyInstituteSubjectView(AictiveInstitutionRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        all_subject = InstitutionSubject.objects.filter(
+            institute=self.request.user.user_institute)
+        context = {
+            'title': 'Institute Subjects',
+            'all_subject': all_subject
+        }
+
+        return render(request, 'institution/subjects/all_subject.html', context)
+
+
+class AddMyInstituteSubjectView(SuccessMessageMixin, AictiveInstitutionRequiredMixin, generic.CreateView):
+    model = InstitutionSubject
+    form_class = InstitutionSubjectForm
+    template_name = 'institution/subjects/add_subject.html'
+    success_message = "Subject  was added successfully"
+    success_url = reverse_lazy('institution:my_institute_subject')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Add Subject'
+        return context
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.institute = self.request.user.user_institute
+        self.object.save()
+
+        return super(AddMyInstituteSubjectView, self).form_valid(form)
+
+
+class EditMyInstituteSubjectView(SuccessMessageMixin, AictiveInstitutionRequiredMixin, generic.edit.UpdateView):
+    model = InstitutionSubject
+    context_object_name = 'subject'
+    form_class = InstitutionSubjectForm
+    template_name = 'institution/subjects/update_subject.html'
+    success_message = "Subject  was updated successfully"
+    success_url = reverse_lazy('institution:my_institute_subject')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Update Subject'
+        return context
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.institute = self.request.user.user_institute
+        self.object.save()
+
+        return super(EditMyInstituteSubjectView, self).form_valid(form)
+
+
+class DeleteMyInstituteSubjectView(SuccessMessageMixin, AictiveInstitutionRequiredMixin, generic.edit.DeleteView):
+    model = InstitutionSubject
+    template_name = 'institution/subjects/delete_subject.html'
+    success_message = "Subject was deleted successfully"
+    success_url = reverse_lazy('institution:my_institute_subject')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Delete Subject'
+        return context
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super(DeleteMyInstituteSubjectView, self).delete(request, *args, **kwargs)

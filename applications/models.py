@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from applicant.models import ApplicantProfile
-from institution.models import InstitutionProfile, AdmissionSession, InstitutionTransactionMethod
+from institution.models import InstitutionProfile, AdmissionSession, InstitutionTransactionMethod, InstitutionSubject
 # Create your models here.
 
 
@@ -17,6 +17,8 @@ class Application(models.Model):
         ApplicantProfile, on_delete=models.CASCADE, related_name='applicant_applications')
     institute = models.ForeignKey(
         InstitutionProfile, on_delete=models.CASCADE, related_name='institute_applications')
+    subject = models.ForeignKey(
+        InstitutionSubject, on_delete=models.CASCADE, related_name='subject_applications')
     status = models.CharField(
         max_length=10, choices=STATUS_CHOICES, default='0')
     paid = models.BooleanField(default=False)

@@ -6,11 +6,18 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import get_user_model
 from applicant.models import ApplicantPrevEducation, ApplicantProfile
-from institution.models import InstitutionProfile, AdmissionSession, InstitutionTransactionMethod
+from institution.models import InstitutionProfile, AdmissionSession, InstitutionTransactionMethod, InstitutionSubject
 from .models import Application
 from .forms import ApplicationForm, ApplicationPaymentForm
 from django.views import View, generic
 # Create your views here.
+
+
+def load_subjects(request):
+    institute_id = request.GET.get('institute')
+    subjects = InstitutionSubject.objects.filter(
+        institute_id=institute_id)
+    return render(request, 'applicant/applications/subject_dropdown_list_options.html', {'subjects': subjects})
 
 
 class ApplyApplicationView(AictiveApplicantRequiredMixin, View):
@@ -64,10 +71,14 @@ class ApplyApplicationView(AictiveApplicantRequiredMixin, View):
                 messages.error(request, f"Now Admission Is Closed For {institute_obj.institute_name}")
                 return redirect('applications:apply', applicant_obj.id)
 
-            application_form_obj = application_form.save(commit=False)
-            application_form_obj.owner = request.user
-            application_form_obj.applicant = applicant_obj
-            application_form_obj.save()
+            # request.POST.get('subject_name') == '1' and institute_obj.gender == '2'
+
+            print(institute_obj.institute_subjects)
+
+            # application_form_obj = application_form.save(commit=False)
+            # application_form_obj.owner = request.user
+            # application_form_obj.applicant = applicant_obj
+            # application_form_obj.save()
             messages.success(request, f"Apply For {applicant_obj.student_name} In {institute_obj.institute_name} Is Successfully Completed")
             return redirect('applications:application_list')
         else:

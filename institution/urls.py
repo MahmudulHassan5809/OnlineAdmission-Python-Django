@@ -14,10 +14,20 @@ urlpatterns = [
     path('admission-session/edit/<int:pk>/',
          views.UpdateInstitutionSession.as_view(), name="update_session"),
 
-    path('institute/all/',
+    path('institute/view/',
          views.MyInstituteView.as_view(), name="my_institute"),
     path('institute/edit/<int:pk>/',
          views.MyInstituteEditView.as_view(), name="my_institute_edit"),
+
+    path('institute/subject/',
+         views.MyInstituteSubjectView.as_view(), name="my_institute_subject"),
+
+    path('institute/subject/add/',
+         views.AddMyInstituteSubjectView.as_view(), name="my_institute_subject_add"),
+    path('institute/subject/edit/<int:pk>/',
+         views.EditMyInstituteSubjectView.as_view(), name="my_institute_subject_edit"),
+    path('institute/subject/delete/<int:pk>/',
+         views.DeleteMyInstituteSubjectView.as_view(), name="my_institute_subject_delete"),
 
 
     path('transaction-method/',

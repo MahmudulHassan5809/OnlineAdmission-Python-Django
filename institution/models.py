@@ -29,6 +29,22 @@ class InstitutionProfile(models.Model):
         return self.institute_name
 
 
+class InstitutionSubject(models.Model):
+    LEVEL_CHOICES = (
+        ('1', 'Bachelor'),
+        ('2', 'Masters'),
+        ('3', 'Both'),
+    )
+    institute = models.ForeignKey(
+        InstitutionProfile, on_delete=models.CASCADE, related_name='institute_subjects')
+    subject_name = models.CharField(max_length=250)
+    level = models.CharField(
+        max_length=10, choices=LEVEL_CHOICES)
+
+    def __str__(self):
+        return self.subject_name
+
+
 # class SingleInstanceMixin(object):
 #     """Makes sure that no more than one instance of a given model is created."""
 

@@ -1,0 +1,32 @@
+{% extends "institution_base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}
+    {{title}}
+{% endblock title %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-10 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="float-left">
+                        {{title}}
+                    </h4>
+                    <a href="{% url 'institution:my_institute_subject' %}" class="float-right btn btn-sm btn-info">
+                        <i class="fas fa-plus">Back</i>
+                    </a>
+                </div>
+                <div class="card-body">
+                    <form action="{% url 'institution:my_institute_subject_edit' subject.id %}" method="POST" novalidate>
+                        {% csrf_token %}
+                        {{form|crispy}}
+
+                        <input type="submit" value="Save">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
