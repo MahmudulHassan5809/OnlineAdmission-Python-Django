@@ -11,6 +11,7 @@ urlpatterns = [
     path('applicant/', include('applicant.urls', namespace='applicant')),
     path('institution/', include('institution.urls', namespace='institution')),
     path('applications/', include('applications.urls', namespace='applications')),
+    path('transaction/', include('transaction.urls', namespace='transaction')),
     path('', HomeLoginView.as_view(), name="home_login"),
 ]
 

@@ -42,7 +42,7 @@
                                     {% if application.paid %}
                                         Paid
                                     {% else %}
-                                        <a href="{% url 'applications:pay_application_fee' application.id application.institute.id %}" class="btn btn-success btn-block">Pay Fee</a>
+                                        <a href="{% url 'transaction:pay_application_fee' application.id application.institute.id %}" class="btn btn-success btn-block">Pay Fee</a>
                                     {% endif %}
                                 </td>
                                 <td>

@@ -44,7 +44,7 @@
                                     <td>{{payment.created_at}}</td>
                                     <td>
                                     {% if payment.status == '0' %}
-                                    <form action="{% url 'applications:institute_payment_check' payment.id %}" method="POST">
+                                    <form action="{% url 'transaction:institute_payment_check' payment.id %}" method="POST">
                                         {% csrf_token %}
                                         <div class="form-row">
                                             <div class="col-9">

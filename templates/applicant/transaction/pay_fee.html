@@ -14,7 +14,7 @@
                     <h3>Pay Fee For {{institute_obj.institute_name}}--Amount : {{institute_obj.application_fee}}</h3>
                 </div>
                 <div class="card-body">
-                    <form action="{% url 'applications:pay_application_fee' application_id institute_obj.id  %}" method="POST" novalidate>
+                    <form action="{% url 'transaction:pay_application_fee' application_id institute_obj.id  %}" method="POST" novalidate>
                         {% csrf_token %}
                         {{application_payment_form|crispy}}
 

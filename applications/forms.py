@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Application, ApplicationPayment
+from .models import Application
 from institution.models import InstitutionProfile, InstitutionSubject
 
 
@@ -26,15 +26,3 @@ class ApplicationForm(ModelForm):
         elif self.instance.pk:
             print('0kkkkkkkkkkkkkkkkkk')
             self.fields['subject'].queryset = self.instance.user_institute.institute_subjects
-
-
-class ApplicationPaymentForm(ModelForm):
-    class Meta:
-        model = ApplicationPayment
-        exclude = ('application',)
-
-    def __init__(self, *args, **kwargs):
-        self.transaction_method = kwargs.pop('transaction_method', None)
-        super(ApplicationPaymentForm, self).__init__(*args, **kwargs)
-        self.fields['payment_method'] = forms.ModelChoiceField(
-            queryset=self.transaction_method)

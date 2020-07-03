@@ -12,7 +12,7 @@
                     <h4 class="float-left">
                         Transaction Method
                     </h4>
-                    <a href="{% url 'institution:add_transaction_method' %}" class="btn btn-primary btn-sm float-right">
+                    <a href="{% url 'transaction:add_transaction_method' %}" class="btn btn-primary btn-sm float-right">
                         <i class="fas fa-plus"></i> Add New Transaction
                     </a>
                 </div>
@@ -36,10 +36,10 @@
                                 <td>{{method.method_name}}</td>
                                 <td>{{method.account_number}}</td>
                                 <td>
-                                    <a href="{% url 'institution:edit_transaction_method' method.id %}" class="btn btn-primary btn-block">
+                                    <a href="{% url 'transaction:edit_transaction_method' method.id %}" class="btn btn-primary btn-block">
                                         <i class="fas fa-edit mr-1"></i> Edit
                                     </a>
-                                    <a href="{% url 'institution:delete_transaction_method' method.id %}" class="btn btn-danger btn-block">
+                                    <a href="{% url 'transaction:delete_transaction_method' method.id %}" class="btn btn-danger btn-block">
                                         <i class="fas fa-trash mr-1"></i> Delete
                                     </a>
                                 </td>

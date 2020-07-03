@@ -4,11 +4,22 @@ from accounts.mixins import AictiveUserRequiredMixin, AictiveApplicantRequiredMi
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
+
 from django.contrib.auth import get_user_model
+
 from applicant.models import ApplicantPrevEducation, ApplicantProfile
-from institution.models import InstitutionProfile, AdmissionSession, InstitutionTransactionMethod, InstitutionSubject
-from .models import Application, ApplicationPayment
-from .forms import ApplicationForm, ApplicationPaymentForm
+from applicant.forms import ApplicantProfileForm, ApplicantPrevEducationForm, ApplicantPrevEducationFormSet
+
+from institution.models import InstitutionProfile, AdmissionSession, InstitutionSubject
+
+from institution.forms import AdmissionSessionForm, InstitutionSubjectForm
+
+from transaction.models import InstitutionTransactionMethod, ApplicationPayment
+from transaction.forms import InstitutionTransactionMethodForm, ApplicationPaymentForm
+
+from applications.models import Application
+from applications.forms import ApplicationForm
+
 from django.views import View, generic
 # Create your views here.
 
@@ -131,103 +142,3 @@ class DeleteApplicationView(AictiveApplicantRequiredMixin, generic.edit.DeleteVi
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, self.success_message)
         return super(DeleteApplicationView, self).delete(request, *args, **kwargs)
-
-
-class PayApplicationFeeView(AictiveApplicantRequiredMixin, View):
-    def get(self, request, *args, **kwargs):
-        application_id = kwargs.get('application_id')
-        institute_id = kwargs.get('institute_id')
-
-        institute_obj = get_object_or_404(InstitutionProfile, id=institute_id)
-        transaction_method = InstitutionTransactionMethod.objects.filter(
-            institute=institute_obj)
-
-        application_payment_form = ApplicationPaymentForm(
-            transaction_method=transaction_method)
-
-        context = {
-            'title': 'Payment',
-            'application_id': application_id,
-            'institute_id': institute_id,
-            'institute_obj': institute_obj,
-            'application_payment_form': application_payment_form
-        }
-
-        return render(request, 'applicant/transaction/pay_fee.html', context)
-
-    def post(self, request, *args, **kwargs):
-        application_id = kwargs.get('application_id')
-        institute_id = kwargs.get('institute_id')
-        institute_obj = get_object_or_404(InstitutionProfile, id=institute_id)
-
-        transaction_method = InstitutionTransactionMethod.objects.filter(
-            institute=institute_obj)
-        application_payment_form = ApplicationPaymentForm(request.POST,
-                                                          transaction_method=transaction_method)
-        if application_payment_form.is_valid():
-            instance = application_payment_form.save(commit=False)
-            instance.application = get_object_or_404(
-                Application, id=application_id)
-            instance.save()
-            messages.success(request, 'Application Fee Is Successfully Paid')
-            return redirect('applications:application_list')
-        else:
-            context = {
-                'title': 'Payment',
-                'application_id': application_id,
-                'institute_id': institute_id,
-                'institute_obj': institute_obj,
-                'application_payment_form': application_payment_form
-            }
-
-            return render(request, 'applicant/transaction/pay_fee.html', context)
-
-
-class ApplicantPaymentListView(AictiveApplicantRequiredMixin, generic.ListView):
-    model = ApplicationPayment
-    context_object_name = 'payment_list'
-    template_name = 'applicant/transaction/payment_list.html'
-    paginate_by = 10
-
-    def get_queryset(self):
-        qs = ApplicationPayment.objects.filter(owner=self.request.user)
-        return qs
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'Applicant Payment List'
-        return context
-
-
-class InstitutePaymentListView(AictiveInstitutionRequiredMixin, generic.ListView):
-    model = ApplicationPayment
-    context_object_name = 'payment_list'
-    template_name = 'institution/transaction/payment_list.html'
-    paginate_by = 10
-
-    def get_queryset(self):
-        qs = ApplicationPayment.objects.filter(
-            institute=self.request.user.user_institute)
-        return qs
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'Payment List'
-        return context
-
-
-class InstitutePaymentCheckView(AictiveInstitutionRequiredMixin, View):
-    def post(self, request, *args, **kwargs):
-        status = request.POST.get('status')
-
-        if status == '':
-            messages.error(request, ('Please Input All The Fields'))
-            return redirect('applications:institute_payment_list')
-        else:
-            payment_id = kwargs.get('id')
-            application_payment = get_object_or_404(
-                ApplicationPayment, id=payment_id)
-            application_payment.status = status
-            application_payment.save()
-            messages.success(request, ('Withdraw Updated Successfully'))
-            return redirect('applications:institute_payment_list')

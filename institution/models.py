@@ -67,7 +67,7 @@ class AdmissionSession(models.Model):
         InstitutionProfile, on_delete=models.CASCADE, related_name='institute_session')
     session_name = models.CharField(max_length=200)
     year = models.IntegerField()
-    level = models.CharField(max_length=50, choices=LEVEL_CHOICES,default='3')
+    level = models.CharField(max_length=50, choices=LEVEL_CHOICES, default='3')
     status = models.BooleanField()
 
     class Meta:
@@ -76,17 +76,3 @@ class AdmissionSession(models.Model):
 
     def __str__(self):
         return self.session_name
-
-
-class InstitutionTransactionMethod(models.Model):
-    institute = models.ForeignKey(
-        InstitutionProfile, on_delete=models.CASCADE, related_name='institute_transaction')
-    method_name = models.CharField(max_length=50)
-    account_number = models.CharField(max_length=50)
-
-    class Meta:
-        verbose_name = 'Institution Transaction'
-        verbose_name_plural = '3. Institution Transaction'
-
-    def __str__(self):
-        return self.method_name

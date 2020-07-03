@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'applicant',
     'applications',
     'institution',
+    'transaction',
     'settings',
 
     'django.contrib.admin',
