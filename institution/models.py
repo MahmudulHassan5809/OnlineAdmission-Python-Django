@@ -40,6 +40,7 @@ class InstitutionSubject(models.Model):
     subject_name = models.CharField(max_length=250)
     level = models.CharField(
         max_length=10, choices=LEVEL_CHOICES)
+    active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.subject_name

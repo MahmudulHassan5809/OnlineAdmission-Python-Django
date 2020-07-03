@@ -14,7 +14,7 @@
                     <h4 class="float-left">Choose Institute</h4>
                 </div>
                 <div class="card-body">
-                    <form action="{% url 'applications:apply' applicant_id %}" method="POST" novalidate>
+                    <form id="applyForm" action="{% url 'applications:apply' applicant_id %}" method="POST" data-cities-url="{% url 'applications:ajax_load_subjects' %}" novalidate>
                         {% csrf_token %}
                         {{application_form|crispy}}
 
@@ -25,3 +25,25 @@
         </div>
     </div>
 {% endblock content %}
+
+
+{% block script %}
+    <script>
+        $("#id_institute").change(function () {
+
+      var url = $("#applyForm").attr("data-cities-url");
+      var instituteId = $(this).val();
+
+      $.ajax({
+        url: url,
+        data: {
+          'institute': instituteId
+        },
+        success: function (data) {
+          $("#id_subject").html(data);
+        }
+      });
+
+    });
+    </script>
+{% endblock script %}

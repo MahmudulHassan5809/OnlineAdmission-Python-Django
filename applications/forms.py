@@ -13,9 +13,19 @@ class ApplicationForm(ModelForm):
         exclude = ('owner', 'applicant', 'status', 'paid',)
 
     def __init__(self, *args, **kwargs):
-        self.institute_subject = kwargs.pop('institute_subject', None)
         super(ApplicationForm, self).__init__(*args, **kwargs)
         self.fields['subject'].queryset = InstitutionSubject.objects.none()
+
+        if 'institute' in self.data:
+            try:
+                institute_id = int(self.data.get('institute'))
+                self.fields['subject'].queryset = InstitutionSubject.objects.filter(
+                    institute_id=institute_id)
+            except (ValueError, TypeError):
+                pass
+        elif self.instance.pk:
+            print('0kkkkkkkkkkkkkkkkkk')
+            self.fields['subject'].queryset = self.instance.user_institute.institute_subjects
 
 
 class ApplicationPaymentForm(ModelForm):

@@ -11,6 +11,10 @@ class Application(models.Model):
         ('1', 'Completed'),
         ('2', 'Canceled')
     )
+    LEVEL_CHOICES = (
+        ('1', 'Bachelor'),
+        ('2', 'Masters'),
+    )
     owner = models.ForeignKey(
         get_user_model(), on_delete=models.CASCADE, related_name='owner_applications')
     applicant = models.ForeignKey(
@@ -21,6 +25,8 @@ class Application(models.Model):
         InstitutionSubject, on_delete=models.CASCADE, related_name='subject_applications')
     status = models.CharField(
         max_length=10, choices=STATUS_CHOICES, default='0')
+    level = models.CharField(
+        max_length=10, choices=LEVEL_CHOICES)
     paid = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True, auto_now=False)
 

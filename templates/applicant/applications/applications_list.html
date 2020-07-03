@@ -21,6 +21,8 @@
                                 <th>Owner</th>
                                 <th>Student Name</th>
                                 <th>Institute Name</th>
+                                <th>Level</th>
+                                <th>Subject</th>
                                 <th>Status</th>
                                 <th>Paid</th>
                                 <th>Actions</th>
@@ -33,6 +35,8 @@
                                 <td>{{application.owner.username|title}}</td>
                                 <td>{{application.applicant.student_name}}</td>
                                 <td>{{application.institute.institute_name}}</td>
+                                <td>{{application.get_level_display}}</td>
+                                <td>{{application.subject.subject_name}}</td>
                                 <td>{{application.get_status_display}}</td>
                                 <td>
                                     {% if application.paid %}

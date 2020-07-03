@@ -16,7 +16,7 @@ from django.views import View, generic
 def load_subjects(request):
     institute_id = request.GET.get('institute')
     subjects = InstitutionSubject.objects.filter(
-        institute_id=institute_id)
+        institute_id=institute_id, active=True)
     return render(request, 'applicant/applications/subject_dropdown_list_options.html', {'subjects': subjects})
 
 
@@ -71,14 +71,21 @@ class ApplyApplicationView(AictiveApplicantRequiredMixin, View):
                 messages.error(request, f"Now Admission Is Closed For {institute_obj.institute_name}")
                 return redirect('applications:apply', applicant_obj.id)
 
-            # request.POST.get('subject_name') == '1' and institute_obj.gender == '2'
+            subject_obj = get_object_or_404(
+                InstitutionSubject, id=request.POST.get('subject'))
 
-            print(institute_obj.institute_subjects)
+            if subject_obj.level == '1' and request.POST.get('level') == '2':
+                messages.error(request, f"{subject_obj.subject_name} In {institute_obj.institute_name} Only Avialable For Bachelor")
+                return redirect('applications:apply', applicant_obj.id)
 
-            # application_form_obj = application_form.save(commit=False)
-            # application_form_obj.owner = request.user
-            # application_form_obj.applicant = applicant_obj
-            # application_form_obj.save()
+            if subject_obj.level == '2' and request.POST.get('level') == '1':
+                messages.error(request, f"{subject_obj.subject_name} In {institute_obj.institute_name} Only Avialable For Masters")
+                return redirect('applications:apply', applicant_obj.id)
+
+            application_form_obj = application_form.save(commit=False)
+            application_form_obj.owner = request.user
+            application_form_obj.applicant = applicant_obj
+            application_form_obj.save()
             messages.success(request, f"Apply For {applicant_obj.student_name} In {institute_obj.institute_name} Is Successfully Completed")
             return redirect('applications:application_list')
         else:
