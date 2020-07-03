@@ -1,0 +1,56 @@
+{% extends "institution_base.html" %}
+
+{% block title %}
+    {{title}}
+{% endblock title %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-10 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="float-left">
+                        Admission Session
+                    </h4>
+                    <a href="{% url 'institution:create_session' %}" class="float-right btn btn-sm btn-info">
+                        <i class="fas fa-plus">Add Admission Session</i>
+                    </a>
+                </div>
+                <div class="card-body">
+
+                    <table class="table table-striped table-inverse table-hover">
+                        <thead>
+                            <tr>
+                                <th>Application Owner</th>
+                                <th>Student Name</th>
+                                <th>Institute Name</th>
+                                <th>Subject</th>
+                                <th>Level</th>
+                                <th>Paid</th>
+                                <th>Created At</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for application in pending_applications %}
+                            <tr>
+                                <td>{{application.applicant.student_name}}</td>
+                                <td>{{application.owner.username|title}}</td>
+                                <td>{{application.institute.institute_name}}</td>
+                                <td>{{application.subject.subject_name}}</td>
+                                <td>{{application.get_level_display}}</td>
+                                <td>{{application.paid}}</td>
+
+                                <td>{{application.created_at}}</td>
+                                <td></td>
+                            </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

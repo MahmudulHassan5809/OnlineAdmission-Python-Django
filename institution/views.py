@@ -8,6 +8,7 @@ from .forms import AdmissionSessionForm, InstitutionTransactionMethodForm, Insti
 from django.views import View, generic
 from django.contrib.auth import get_user_model
 from applicant.models import ApplicantPrevEducation, ApplicantProfile
+from applications.models import Application
 from .models import InstitutionProfile, AdmissionSession, InstitutionTransactionMethod, InstitutionSubject
 # Create your views here.
 
@@ -282,3 +283,20 @@ class DeleteMyInstituteSubjectView(SuccessMessageMixin, AictiveInstitutionRequir
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, self.success_message)
         return super(DeleteMyInstituteSubjectView, self).delete(request, *args, **kwargs)
+
+
+class PendingApplicationView(AictiveInstitutionRequiredMixin, generic.ListView):
+    model = Application
+    paginate_by = 10
+    context_object_name = 'pending_applications'
+    template_name = 'institution/applications/pending_applications.html'
+
+    def get_queryset(self):
+        qs = Application.objects.filter(
+            institute=self.request.user.user_institute, status='0')
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Pending Application'
+        return context

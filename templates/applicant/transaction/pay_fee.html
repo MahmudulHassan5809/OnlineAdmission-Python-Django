@@ -17,6 +17,8 @@
                     <form action="{% url 'applications:pay_application_fee' application_id institute_obj.id  %}" method="POST" novalidate>
                         {% csrf_token %}
                         {{application_payment_form|crispy}}
+
+                        <input type="submit" value="Pay">
                     </form>
                 </div>
             </div>

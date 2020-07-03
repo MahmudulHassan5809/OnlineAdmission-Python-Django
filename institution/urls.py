@@ -38,4 +38,7 @@ urlpatterns = [
          views.EditTransactionMethodView.as_view(), name="edit_transaction_method"),
     path('transaction-method/delete/<int:pk>/',
          views.DeleteTransactionMethodView.as_view(), name="delete_transaction_method"),
+
+    path('pending-application/', views.PendingApplicationView.as_view(),
+         name='institute_pending_application'),
 ]
