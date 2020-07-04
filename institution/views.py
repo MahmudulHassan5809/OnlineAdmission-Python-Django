@@ -1,4 +1,6 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
+from django.core import serializers
+import json
 from django.urls import reverse_lazy
 from accounts.mixins import AictiveUserRequiredMixin, AictiveApplicantRequiredMixin, AictiveInstitutionRequiredMixin
 from django.contrib import messages
@@ -234,3 +236,33 @@ class PendingApplicationView(AictiveInstitutionRequiredMixin, generic.ListView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Pending Application'
         return context
+
+
+class AcceptedApplicationView(AictiveInstitutionRequiredMixin, generic.ListView):
+    model = Application
+    paginate_by = 10
+    context_object_name = 'accepted_applications'
+    template_name = 'institution/applications/accepted_applications.html'
+
+    def get_queryset(self):
+        qs = Application.objects.filter(
+            institute=self.request.user.user_institute, status='1')
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Accepted Application'
+        return context
+
+
+class ApplicantProfileView(AictiveInstitutionRequiredMixin, View):
+    def get(self, requestm, *args, **kwargs):
+        applicant_id = kwargs.get('applicant_id')
+        applicant_obj = get_object_or_404(ApplicantProfile, pk=applicant_id)
+
+        all_objects = list(ApplicantProfile.objects.filter(id=applicant_id)
+                           ) + list(ApplicantPrevEducation.objects.filter(applicant=applicant_obj))
+
+        data = serializers.serialize('json', all_objects)
+
+        return HttpResponse(data, content_type='application/json')

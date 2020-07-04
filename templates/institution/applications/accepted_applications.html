@@ -1,0 +1,165 @@
+{% extends "institution_base.html" %}
+
+{% block title %}
+    {{title}}
+{% endblock title %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-10 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="float-left">
+                        Accepted Application
+                    </h4>
+
+                </div>
+                <div class="card-body">
+
+                    <table class="table table-striped table-inverse table-hover">
+                        <thead>
+                            <tr>
+                                <th>Application Owner</th>
+                                <th>Phone</th>
+                                <th>Student Name</th>
+                                <th>Institute Name</th>
+                                <th>Subject</th>
+                                <th>Level</th>
+                                <th>Paid</th>
+                                <th>Created At</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for application in accepted_applications %}
+                            <tr>
+                                <td>{{application.owner.username|title}}</td>
+                                <td>{{application.owner.user_profile.phone_number}}</td>
+                                <td>{{application.applicant.student_name}}</td>
+                                <td>{{application.institute.institute_name}}</td>
+                                <td>{{application.subject.subject_name}}</td>
+                                <td>{{application.get_level_display}}</td>
+                                <td>{{application.paid}}</td>
+
+                                <td>{{application.created_at}}</td>
+                                <td>
+                                    <a type="button" class="btn btn-info btn-block btn-sm text-dark profile" data-toggle="modal" data-target="#applicantProfileModal" data-profile-url="{% url 'institution:applicant_profile' application.applicant.id %}">
+                                        <i class="fas fa-user"></i>
+                                        View Profile
+                                    </a>
+                                </td>
+                            </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Modal -->
+<div class="modal fade" id="applicantProfileModal" tabindex="-1" role="dialog" aria-labelledby="profileModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Student Profile</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+
+{% block script %}
+    <script>
+        jQuery(document).ready(function($) {
+
+            $('.profile').click(function (e) {
+                e.preventDefault();
+                let profileHtml = '';
+                let educationHtml = '';
+                url = $(this).attr("data-profile-url");
+                $.ajax({
+                    url: url,
+                    success: function (data) {
+                        var idx = 1;
+                        var profile = data.slice(0,idx);
+                        var education = data.slice(idx);
+
+                        profile.forEach( function(element, index) {
+                            profileHtml += `
+                                <div class="text-dark font-weight-bold">
+                                    <div class="text-center">
+                                        <img width="200px" src="/media/${element.fields.student_pic}" class="img-responsive">
+                                    </div>
+                                    <div class="text-center">
+                                        <h3 class="lead">Basic Information</h3>
+                                        <ul class="list-group">
+                                            <li class="list-group-item">Name : ${element.fields.student_name}</li>
+                                            <li class="list-group-item">Father Name : ${element.fields.father_name} | Mother Name : ${element.fields.mother_name}</li>
+
+                                            <li class="list-group-item">Father Occupation : ${element.fields.father_occupation} | Mother Occupation : ${element.fields.mother_occupation} | Guardian Income : ${element.fields.guardian_income}</li>
+
+
+
+                                            <li class="list-group-item">Present Address : ${element.fields.present_address} | Permanent Address : ${element.fields.permanent_address}</li>
+
+
+                                            <li class="list-group-item">Contact : ${element.fields.contact_number} | Email : ${element.fields.email_address}</li>
+
+
+                                            <li class="list-group-item">Birth Date : ${element.fields.birth_date} | Birth Id : ${element.fields.birth_id}</li>
+
+
+                                            <li class="list-group-item">Gender : ${element.fields.gender} | Religion : ${element.fields.religion} | Blood Group : ${element.fields.blood_group}</li>
+
+
+
+                                            <li class="list-group-item">Freedom Fighet Quota : ${element.fields.freedom_fighter_quota} | Is Autism : ${element.fields.is_autism} | Height : ${element.fields.height}</li>
+                                            <li class="list-group-item">Local Guardian Name : ${element.fields.local_guardian_name} | Relation : ${element.fields.relation_with_applicant}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            `
+                        });
+
+                        education.forEach( function(element, index) {
+                        educationHtml += `
+                                <div class="text-dark font-weight-bold">
+                                    <ul class="list-group list-group-horizontal">
+                                        <li class="list-group-item">Exam : ${element.fields.exam_name}</li>
+                                        <li class="list-group-item">Board : ${element.fields.board_name}</li>
+                                        <li class="list-group-item">Institute Name : ${element.fields.institute_name}</li>
+                                        <li class="list-group-item">Passing Year : ${element.fields.passing_year}</li>
+                                        <li class="list-group-item">Result : ${element.fields.result}</li>
+                                    </ul>
+                                </div>
+                            `
+                        });
+                        $('.modal-body').append(profileHtml);
+                        $('.modal-body').append(educationHtml);
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                       console.log(xhr)
+                    }
+                });
+            })
+
+            $(".modal").on("hidden.bs.modal", function(){
+                $(".modal-body").html("");
+            });
+        });
+    </script>
+{% endblock script %}

@@ -31,4 +31,10 @@ urlpatterns = [
 
     path('pending-application/', views.PendingApplicationView.as_view(),
          name='institute_pending_application'),
+
+    path('accepted-application/', views.AcceptedApplicationView.as_view(),
+         name='institute_accepted_application'),
+
+    path('applicant-profile/<int:applicant_id>/', views.ApplicantProfileView.as_view(),
+         name='applicant_profile'),
 ]

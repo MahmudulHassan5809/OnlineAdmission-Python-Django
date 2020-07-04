@@ -78,7 +78,7 @@ class ApplyApplicationView(AictiveApplicantRequiredMixin, View):
 
             check_session = AdmissionSession.objects.filter(
                 institute=institute_obj, status=True).first()
-            print(check_session.get_level_display(), '=======')
+
             if not check_session:
                 messages.error(request, f"Now Admission Is Closed For {institute_obj.institute_name}")
                 return redirect('applications:apply', applicant_obj.id)
@@ -138,6 +138,13 @@ class DeleteApplicationView(AictiveApplicantRequiredMixin, generic.edit.DeleteVi
         context = super().get_context_data(**kwargs)
         context['title'] = 'Delete Application'
         return context
+
+    def render_to_response(self, context):
+        if self.object.status == '1':
+            messages.info(
+                self.request, 'Sorry You Can Not Delete Application After Completed')
+            return redirect('applications:application_list')
+        return super().render_to_response(context)
 
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, self.success_message)

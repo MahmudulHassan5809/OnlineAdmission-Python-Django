@@ -9,18 +9,18 @@ class ApplicantProfile(models.Model):
         ('2', 'Female'),
     )
     RELIGION_CHOICES = (
-        ('1', 'Islam'),
-        ('2', 'Hinduism'),
-        ('3', 'Cristian'),
-        ('4', 'Buddhist'),
+        ('Islam', 'Islam'),
+        ('Hinduism', 'Hinduism'),
+        ('Cristian', 'Cristian'),
+        ('Buddhist', 'Buddhist'),
     )
     FREEDOM_FIGHTER_CHOICES = (
-        ('0', 'No'),
-        ('1', 'Yes'),
+        ('No', 'No'),
+        ('Yes', 'Yes'),
     )
     IS_AUTISM_CHOICES = (
-        ('0', 'No'),
-        ('1', 'Yes'),
+        ('No', 'No'),
+        ('Yes', 'Yes'),
     )
     owner = models.ForeignKey(
         get_user_model(), on_delete=models.CASCADE, related_name='user_applications')
@@ -60,16 +60,16 @@ class ApplicantProfile(models.Model):
 
 class ApplicantPrevEducation(models.Model):
     BOARD_CHOICES = (
-        ('1', 'Dhaka'),
-        ('2', 'Khulna'),
-        ('3', 'Rajshahi'),
-        ('4', 'Barishal'),
-        ('5', 'Jessore'),
-        ('6', 'Comilla'),
+        ('Dhaka', 'Dhaka'),
+        ('Khulna', 'Khulna'),
+        ('Rajshahi', 'Rajshahi'),
+        ('Rajshahi', 'Rajshahi'),
+        ('Jessore', 'Jessore'),
+        ('Comilla', 'Comilla'),
     )
     EXAM_CHOICES = (
-        ('1', 'SSC'),
-        ('2', 'HSC')
+        ('SSC', 'SSC'),
+        ('HSC', 'HSC')
     )
     applicant = models.ForeignKey(
         ApplicantProfile, on_delete=models.CASCADE, related_name='applicant_pre_edu')
