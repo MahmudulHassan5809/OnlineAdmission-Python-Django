@@ -27,6 +27,11 @@ class HomeLoginView(LoginView):
         context['title'] = 'VortiBd.com'
         return context
 
+    def render_to_response(self, context):
+        if self.request.user.is_authenticated:
+            return redirect('accounts:login_success')
+        return super().render_to_response(context)
+
 
 class RegisterView(View):
     def get(self, request, *args, **kwrags):
