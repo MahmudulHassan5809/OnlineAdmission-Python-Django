@@ -13,6 +13,7 @@ class InstitutionProfile(models.Model):
     user = models.OneToOneField(
         get_user_model(), on_delete=models.CASCADE, related_name='user_institute')
     institute_name = models.CharField(max_length=255)
+    institute_city = models.CharField(max_length=150)
     institute_location = models.CharField(max_length=255)
     institute_code = models.CharField(max_length=50)
     application_fee = models.FloatField()

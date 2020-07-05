@@ -32,5 +32,9 @@ class Application(models.Model):
         upload_to="admit_card", null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, auto_now=False)
 
+    class Meta:
+        verbose_name = 'Application'
+        verbose_name_plural = '1. Applications'
+
     def __str__(self):
         return f"{self.applicant.student_name} apply to {self.institute.institute_name}"

@@ -15,7 +15,7 @@ class InstitutionTransactionMethod(models.Model):
 
     class Meta:
         verbose_name = 'Institution Transaction'
-        verbose_name_plural = '3. Institution Transaction'
+        verbose_name_plural = '1. Institution Transaction'
 
     def __str__(self):
         return self.method_name
@@ -43,6 +43,10 @@ class ApplicationPayment(models.Model):
     pending = models.BooleanField(default=False)
     cancel = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True, auto_now=False)
+
+    class Meta:
+        verbose_name = 'ApplicationPayment'
+        verbose_name_plural = '2. ApplicationPayment'
 
     def __str__(self):
         return self.payment_method.method_name

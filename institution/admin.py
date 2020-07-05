@@ -1,8 +1,13 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import InstitutionProfile
+from .models import InstitutionProfile, InstitutionSubject,AdmissionSession
 from django.contrib.auth import get_user_model
 # Register your models here.
+
+
+class InstitutionSubjectInline(admin.StackedInline):
+    model = InstitutionSubject
+    extra = 0
 
 
 class InstitutionProfileAdmin(admin.ModelAdmin):
@@ -10,6 +15,7 @@ class InstitutionProfileAdmin(admin.ModelAdmin):
         if obj.institute_pic:
             return format_html('<img src="{}" width="30x"/>'.format(obj.institute_pic.url))
 
+    inlines = [InstitutionSubjectInline]
     institute_pic_tag.short_description = 'Instituion Image'
 
     list_display = ["institute_name", "institute_location",
@@ -35,3 +41,15 @@ class InstitutionProfileAdmin(admin.ModelAdmin):
 
 
 admin.site.register(InstitutionProfile, InstitutionProfileAdmin)
+
+
+
+class AdmissionSessionAdmin(admin.ModelAdmin):
+    list_display = ['institute','session_name','year','level','status']
+    search_fields = ['institute__institute_name','session_name']
+    list_filter = ['level','status']
+    list_editable = ['status']
+    list_per_page = 20
+
+
+admin.site.register(AdmissionSession, AdmissionSessionAdmin)
