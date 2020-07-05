@@ -14,3 +14,10 @@ class InstitutionSubjectForm(ModelForm):
     class Meta:
         model = InstitutionSubject
         exclude = ('institute',)
+
+
+class InstituteSearchForm(forms.Form):
+    city = forms.ModelChoiceField(
+        queryset=InstitutionProfile.objects.filter(active=True).values_list('institute_city', flat=True).distinct())
+    subject = forms.ModelChoiceField(
+        queryset=InstitutionSubject.objects.all().values_list('subject_name', flat=True).distinct())

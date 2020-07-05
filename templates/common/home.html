@@ -26,8 +26,8 @@
        <p class="lead text-dark">
            ভর্তির আবেদন ফরমের মূল্য যেকোন মোবাইল ব্যাংকিং, ভিসা/মাস্টার/অ্যামেক্স কার্ড অথবা নির্দিষ্ট ব্যাংকের ইন্টারনেট ব্যাংকিং-এর মাধ্যমে পরিশোধ করা যায়।
        </p>
-    </div>
-       <div class="col-md-4">
+      </div>
+      <div class="col-md-4">
           <div class="card mt-4">
                         <div class="card-header p-4 bg-primary">
                             <h4 class="text-white text-center mb-0 mt-0">Login</h4>
@@ -60,7 +60,57 @@
                         </div>
                         <!-- end card-body -->
                     </div>
-       </div>
+      </div>
+
+      <div class="card w-100 shadow p-4">
+          <div class="col-md-12">
+              <form action="">
+                  <div class="form-row">
+                      <div class="col-6">
+                          {{institute_search_form.city|as_crispy_field}}
+                      </div>
+                      <div class="col-6">
+                          {{institute_search_form.subject|as_crispy_field}}
+                      </div>
+                  </div>
+              </form>
+          </div>
+      </div>
+    </div>
+
+    <div class="row">
+        <div class="card w-100">
+            <div class="col-md-12">
+                <h1 style="font-size: 25px;" class="text-center lead text-success font-weight-bold border-bottom">Online Admission Going on</h1>
+
+                <div class="live__scroll">
+                    <div class="row text-center">
+                        {% for admission in on_going_admission %}
+                            <div class="col-3 live__scroll--box">
+                                <img src="{{admission.institute.institute_pic.url}}" class="img-fluid" width="150px">
+                            </div>
+                            <div class="col-3 live__scroll--box">
+                                <img src="{{admission.institute.institute_pic.url}}" class="img-fluid" width="150px">
+                            </div>
+                            <div class="col-3 live__scroll--box">
+                                <img src="{{admission.institute.institute_pic.url}}" class="img-fluid" width="150px">
+                            </div>
+                            <div class="col-3 live__scroll--box">
+                                <img src="{{admission.institute.institute_pic.url}}" class="img-fluid" width="150px">
+                            </div>
+                            <div class="col-3 live__scroll--box">
+                                <img src="{{admission.institute.institute_pic.url}}" class="img-fluid" width="150px">
+                            </div>
+                            <div class="col-3 live__scroll--box">
+                                <img src="{{admission.institute.institute_pic.url}}" class="img-fluid" width="150px">
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
     </div>
 
 

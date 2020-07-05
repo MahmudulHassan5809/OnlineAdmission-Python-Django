@@ -143,3 +143,22 @@
     background: #00a7d0 !important;
 }
 /* Applicant NavBar End*/
+
+
+/* Home Page Horizontal CSS*/
+.live__scroll {
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+.live__scroll .row{
+    display:block;
+}
+.live__scroll .live__scroll--box {
+    display: inline-block;
+    float: none;
+    padding: 15px;
+    border: none;
+}
+
+/* Home Page Horizontal CSS End*/

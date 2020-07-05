@@ -14,6 +14,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import SignUpForm, UserForm, ProfileForm
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.forms import PasswordChangeForm
+from institution.forms import InstituteSearchForm
 from django.views import View, generic
 
 # Create your views here.
@@ -25,6 +26,7 @@ class HomeLoginView(LoginView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'VortiBd.com'
+        context['institute_search_form'] = InstituteSearchForm()
         return context
 
     def render_to_response(self, context):
