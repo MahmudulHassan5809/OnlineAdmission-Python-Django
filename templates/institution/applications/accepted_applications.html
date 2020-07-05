@@ -26,6 +26,7 @@
                                 <th>Subject</th>
                                 <th>Level</th>
                                 <th>Paid</th>
+                                <th>Admit Card</th>
                                 <th>Created At</th>
                                 <th>Actions</th>
                             </tr>
@@ -41,12 +42,15 @@
                                 <td>{{application.get_level_display}}</td>
                                 <td>{{application.paid}}</td>
 
+                                <td><a href="{{application.admit_card.url}}">Admit</a></td>
+
                                 <td>{{application.created_at}}</td>
                                 <td>
                                     <a type="button" class="btn btn-info btn-block btn-sm text-dark profile" data-toggle="modal" data-target="#applicantProfileModal" data-profile-url="{% url 'institution:applicant_profile' application.applicant.id %}">
                                         <i class="fas fa-user"></i>
                                         View Profile
                                     </a>
+                                    <a href="{% url 'institution:admit_card_generate' application.id %}" class="btn btn-primary btn-block btn-sm">Generate Admit Card</a>
                                 </td>
                             </tr>
 

@@ -37,4 +37,7 @@ urlpatterns = [
 
     path('applicant-profile/<int:applicant_id>/', views.ApplicantProfileView.as_view(),
          name='applicant_profile'),
+
+    path('applicant-admit-card/<int:application_id>/', views.ApplicantAdmitCardView.as_view(),
+         name='admit_card_generate'),
 ]

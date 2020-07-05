@@ -39,6 +39,7 @@ INSTALLED_APPS = [
 
     # Third Party Apps
     'crispy_forms',
+
 ]
 
 SITE_ID = 1

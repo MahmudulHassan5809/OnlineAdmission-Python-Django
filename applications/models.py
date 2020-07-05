@@ -28,6 +28,8 @@ class Application(models.Model):
     level = models.CharField(
         max_length=10, choices=LEVEL_CHOICES)
     paid = models.BooleanField(default=False)
+    admit_card = models.FileField(
+        upload_to="admit_card", null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, auto_now=False)
 
     def __str__(self):

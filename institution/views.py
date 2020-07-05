@@ -6,7 +6,9 @@ from accounts.mixins import AictiveUserRequiredMixin, AictiveApplicantRequiredMi
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+from .render import Render
+from django.core.files import File
+from io import BytesIO
 from django.contrib.auth import get_user_model
 
 from applicant.models import ApplicantPrevEducation, ApplicantProfile
@@ -266,3 +268,26 @@ class ApplicantProfileView(AictiveInstitutionRequiredMixin, View):
         data = serializers.serialize('json', all_objects)
 
         return HttpResponse(data, content_type='application/json')
+
+
+class ApplicantAdmitCardView(AictiveInstitutionRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        application_id = kwargs.get('application_id')
+        application_obj = get_object_or_404(Application, id=application_id)
+        applicant_obj = application_obj.applicant
+        institute_obj = application_obj.institute
+
+        context = {
+            'application_obj': application_obj,
+            'applicant_obj': applicant_obj,
+            'institute_obj': institute_obj
+        }
+        admit_card = Render.render(
+            'institution/admit_card/admit_card.html', context)
+
+        filename = f"{applicant_obj.student_name}-admitcard.pdf"
+
+        application_obj.admit_card.save(
+            filename, File(BytesIO(admit_card.content)))
+
+        return admit_card
