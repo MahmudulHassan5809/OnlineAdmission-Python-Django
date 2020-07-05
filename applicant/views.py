@@ -1,10 +1,13 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.urls import reverse_lazy
 from django.db import transaction
 from accounts.mixins import AictiveUserRequiredMixin, AictiveApplicantRequiredMixin
 from django.contrib import messages
+from django.core import serializers
+import json
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
+from applications.models import Application
 from .forms import ApplicantPrevEducationFormSet, ApplicantProfileForm
 from django.contrib.auth import get_user_model
 from .models import ApplicantPrevEducation, ApplicantProfile
@@ -111,3 +114,26 @@ class DeleteApplicantProfileView(SuccessMessageMixin, AictiveApplicantRequiredMi
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, self.success_message)
         return super(DeleteApplicantProfileView, self).delete(request, *args, **kwargs)
+
+
+class ApplicationStatusView(AictiveApplicantRequiredMixin, generic.edit.DeleteView):
+    def get(self, request, *args, **kwargs):
+        applicant_id = kwargs.get('applicant_id')
+        applicant_obj = get_object_or_404(ApplicantProfile, id=applicant_id)
+        application_obj = list(
+            Application.objects.filter(applicant=applicant_obj))
+
+        data = serializers.serialize('json', application_obj)
+        return HttpResponse(data, content_type='application/json')
+
+
+class ApplicantAdmitCardView(AictiveApplicantRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        applicant_admit_card = Application.objects.filter(
+            owner=request.user, status='1', paid=True)
+        context = {
+            'title': 'Admit Card',
+            'applicant_admit_card': applicant_admit_card
+        }
+
+        return render(request, 'applicant/admit_card/admit_card.html', context)

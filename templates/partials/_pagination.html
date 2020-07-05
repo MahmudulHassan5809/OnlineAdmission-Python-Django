@@ -2,8 +2,12 @@
     <ul class="pagination justify-content-center">
         {% if page_obj.has_previous %}
         <li class="page-item">
-            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" tabindex="-1">Previous</a>
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
         </li>
+        {% else %}
+            <li class="page-item">
+                <a class="page-link" href="javascript:void(0)">Previous</a>
+            </li>
         {% endif %}
         {% for i in page_obj.paginator.page_range %}
             {% if page_obj.number == i %}
@@ -15,6 +19,10 @@
         <li class="page-item">
             <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
         </li>
+        {% else %}
+            <li class="page-item">
+                <a class="page-link" href="javascript:void(0)">Next</a>
+            </li>
         {% endif %}
     </ul>
 </nav>

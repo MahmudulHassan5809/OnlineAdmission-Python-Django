@@ -43,7 +43,7 @@
                                     {{profile.mother_name}}<br>
                                 </td>
                                 <td>
-                                    <a href="" class="btn-block btn btn-info btn-sm">
+                                    <a type="button" data-toggle="modal" data-target="#applicationStatusModel" class="btn-block btn btn-info btn-sm text-white status" data-status-url="{% url 'applicant:application_status' profile.id %}">
                                         <i class="fas fa-redo mr-1"></i> Application Status
                                     </a>
                                     <a href="{% url 'applications:apply' profile.id %}" class="btn-block btn btn-primary btn-sm">
@@ -64,4 +64,75 @@
             </div>
         </div>
     </div>
+
+
+<div class="modal fade" id="applicationStatusModel" tabindex="-1" role="dialog" aria-labelledby="applicationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="applicationModalLabel">Application Status</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock content %}
+
+
+
+{% block script %}
+    <script>
+        jQuery(document).ready(function($) {
+            $('.status').click(function (e) {
+                e.preventDefault();
+                let statusHtml = '';
+                url = $(this).attr("data-status-url");
+                $.ajax({
+                    url: url,
+                    success: function (data) {
+                        let status = '';
+                        let admit_card = false;
+                        data.forEach( function(element, index) {
+                            if (element.fields.status == '0'){
+                               status = 'Pending'
+                            }else if(element.fields.status == '1'){
+                                status = 'Accepted'
+                                admit_card = true;
+                            }else{
+                                status = 'Canceled'
+                            }
+                            statusHtml += `
+                                <div class="card">
+                                    <ul class="list-group list-group-flush font-weight-bold text-dark">
+                                        <li class="list-group-item">Application Fee : ${element.fields.paid ? 'Paid' : 'Unpaid'}</li>
+                                        <li class="list-group-item">Status : ${status}</li>
+                                        <li class="list-group-item">
+                                            Admit Card
+                                            <a href="/media/${element.fields.admit_card}">Download</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            `
+                            console.log(element.fields)
+                        });
+                        $('.modal-body').append(statusHtml);
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                       console.log(xhr)
+                    }
+                });
+            })
+            $(".modal").on("hidden.bs.modal", function(){
+                $(".modal-body").html("");
+            });
+        });
+    </script>
+{% endblock script %}
