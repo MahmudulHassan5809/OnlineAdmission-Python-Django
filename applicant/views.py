@@ -127,13 +127,28 @@ class ApplicationStatusView(AictiveApplicantRequiredMixin, generic.edit.DeleteVi
         return HttpResponse(data, content_type='application/json')
 
 
-class ApplicantAdmitCardView(AictiveApplicantRequiredMixin, View):
-    def get(self, request, *args, **kwargs):
-        applicant_admit_card = Application.objects.filter(
-            owner=request.user, status='1', paid=True)
-        context = {
-            'title': 'Admit Card',
-            'applicant_admit_card': applicant_admit_card
-        }
+class ApplicantAdmitCardView(AictiveApplicantRequiredMixin, generic.ListView):
+    model = Application
+    context_object_name = 'applicant_admit_card'
+    template_name = 'applicant/admit_card/admit_card.html'
+    paginate_by = 10
 
-        return render(request, 'applicant/admit_card/admit_card.html', context)
+    def get_queryset(self):
+        qs = Application.objects.filter(
+            owner=self.request.user, status='1', paid=True)
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Admit Card'
+        return context
+
+    # def get(self, request, *args, **kwargs):
+    #     applicant_admit_card = Application.objects.filter(
+    #         owner=request.user, status='1', paid=True)
+    #     context = {
+    #         'title': 'Admit Card',
+    #         'applicant_admit_card': applicant_admit_card
+    #     }
+
+    #     return render(request, 'applicant/admit_card/admit_card.html', context)

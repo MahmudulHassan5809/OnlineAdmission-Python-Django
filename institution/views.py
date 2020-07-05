@@ -154,16 +154,21 @@ class MyInstituteEditView(SuccessMessageMixin, AictiveInstitutionRequiredMixin, 
         return context
 
 
-class MyInstituteSubjectView(AictiveInstitutionRequiredMixin, View):
-    def get(self, request, *args, **kwargs):
-        all_subject = InstitutionSubject.objects.filter(
-            institute=self.request.user.user_institute)
-        context = {
-            'title': 'Institute Subjects',
-            'all_subject': all_subject
-        }
+class MyInstituteSubjectView(AictiveInstitutionRequiredMixin, generic.ListView):
+    model = InstitutionSubject
+    paginate_by = 10
+    context_object_name = 'all_subject'
+    template_name = 'institution/subjects/all_subject.html'
 
-        return render(request, 'institution/subjects/all_subject.html', context)
+    def get_queryset(self):
+        qs = InstitutionSubject.objects.filter(
+            institute=self.request.user.user_institute)
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Institute Subjects'
+        return context
 
 
 class AddMyInstituteSubjectView(SuccessMessageMixin, AictiveInstitutionRequiredMixin, generic.CreateView):

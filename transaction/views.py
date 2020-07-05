@@ -26,6 +26,7 @@ from django.views import View, generic
 
 class TransactionMethodView(AictiveInstitutionRequiredMixin, generic.ListView):
     model = InstitutionTransactionMethod
+    paginate_by = 10
     context_object_name = 'all_transaction_method'
     template_name = 'institution/transaction/all_transaction_method.html'
 

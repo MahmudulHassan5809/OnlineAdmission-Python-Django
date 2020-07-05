@@ -117,15 +117,29 @@ class ApplyApplicationView(AictiveApplicantRequiredMixin, View):
             return render(request, 'applicant/applications/apply.html', context)
 
 
-class ApplicationListView(AictiveApplicantRequiredMixin, View):
-    def get(self, request, *args, **kwargs):
-        all_application = request.user.owner_applications.all()
-        context = {
-            'title': 'Application List',
-            'all_application': all_application
-        }
+class ApplicationListView(AictiveApplicantRequiredMixin, generic.ListView):
+    model = Application
+    template_name = 'applicant/applications/applications_list.html'
+    context_object_name = 'all_application'
+    paginate_by = 10
 
-        return render(request, 'applicant/applications/applications_list.html', context)
+    def get_queryset(self):
+        qs = self.request.user.owner_applications.all()
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Application List'
+        return context
+
+    # def get(self, request, *args, **kwargs):
+    #     all_application = request.user.owner_applications.all()
+    #     context = {
+    #         'title': 'Application List',
+    #         'all_application': all_application
+    #     }
+
+    #     return render(request, 'applicant/applications/applications_list.html', context)
 
 
 class DeleteApplicationView(AictiveApplicantRequiredMixin, generic.edit.DeleteView):
