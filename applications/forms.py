@@ -10,7 +10,7 @@ class ApplicationForm(ModelForm):
 
     class Meta:
         model = Application
-        exclude = ('owner', 'applicant', 'status', 'paid',)
+        exclude = ('owner', 'applicant', 'status', 'paid','admit_card')
 
     def __init__(self, *args, **kwargs):
         super(ApplicationForm, self).__init__(*args, **kwargs)
