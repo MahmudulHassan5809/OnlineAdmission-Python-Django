@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from ckeditor.fields import RichTextField
+from institution.tasks import set_admission_as_inactive
 # Create your models here.
 
 
@@ -70,11 +71,23 @@ class AdmissionSession(models.Model):
     session_name = models.CharField(max_length=200)
     year = models.IntegerField()
     level = models.CharField(max_length=50, choices=LEVEL_CHOICES, default='3')
+    end_time = models.DateTimeField(null=True, blank=True)
     status = models.BooleanField()
 
     class Meta:
         verbose_name = 'AdmissionSession'
         verbose_name_plural = '2. AdmissionSession'
+
+    def save(self, *args, **kwargs):
+        create_task = False
+        if self.pk is None:
+            create_task = True
+
+        super(AdmissionSession, self).save(*args, **kwargs)
+
+        if create_task and self.end_time:
+            set_admission_as_inactive.apply_async(
+                args=[self.id], eta=self.end_time)
 
     def __str__(self):
         return self.session_name

@@ -52,6 +52,7 @@ SITE_ID = 1
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 AUTH_USER_MODEL = 'accounts.User'
 
+CELERY_BROKER_URL = 'amqp://localhost'
 
 CKEDITOR_CONFIGS = {
     'default': {
