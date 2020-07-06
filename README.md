@@ -28,6 +28,12 @@ Online Admission System For All Univeristy In Bangladesh
 <p>Then go to http://127.0.0.1:8000 in your browser</p>
 
 
+<h2>Author</h2>
+<blockquote>
+  Mahmudul Hassan<br>
+  Email: mahmudul.hassan240@gmail.com
+</blockquote>
+
 
 <div align="center">
     <h3>========Thank You !!!=========</h3>
