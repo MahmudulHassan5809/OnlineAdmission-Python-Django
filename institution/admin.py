@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import InstitutionProfile, InstitutionSubject,AdmissionSession
+from .models import InstitutionProfile, InstitutionSubject, AdmissionSession, InstituteInstruction
 from django.contrib.auth import get_user_model
 # Register your models here.
 
@@ -43,13 +43,22 @@ class InstitutionProfileAdmin(admin.ModelAdmin):
 admin.site.register(InstitutionProfile, InstitutionProfileAdmin)
 
 
-
 class AdmissionSessionAdmin(admin.ModelAdmin):
-    list_display = ['institute','session_name','year','level','status']
-    search_fields = ['institute__institute_name','session_name']
-    list_filter = ['level','status']
+    list_display = ['institute', 'session_name', 'year', 'level', 'status']
+    search_fields = ['institute__institute_name', 'session_name']
+    list_filter = ['level', 'status']
     list_editable = ['status']
     list_per_page = 20
 
 
 admin.site.register(AdmissionSession, AdmissionSessionAdmin)
+
+
+class InstituteInstructionAdmin(admin.ModelAdmin):
+    list_display = ['institute', 'title']
+    search_fields = ['institute__institute_name', 'body', 'title']
+    list_filter = ['institute__institute_name']
+    list_per_page = 20
+
+
+admin.site.register(InstituteInstruction, InstituteInstructionAdmin)
