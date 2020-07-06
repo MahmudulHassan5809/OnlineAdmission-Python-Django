@@ -39,12 +39,26 @@ INSTALLED_APPS = [
 
     # Third Party Apps
     'crispy_forms',
+    'ckeditor',
+    'ckeditor_uploader',
 
 ]
+
+JQUERY_URL = True
+CKEDITOR_UPLOAD_PATH = "ck_editor/"
+CKEDITOR_RESTRICT_BY_USER = True
 
 SITE_ID = 1
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 AUTH_USER_MODEL = 'accounts.User'
+
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'width': '100%'
+    }
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

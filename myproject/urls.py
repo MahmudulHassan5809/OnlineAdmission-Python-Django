@@ -12,6 +12,7 @@ urlpatterns = [
     path('institution/', include('institution.urls', namespace='institution')),
     path('applications/', include('applications.urls', namespace='applications')),
     path('transaction/', include('transaction.urls', namespace='transaction')),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
     path('', HomeLoginView.as_view(), name="home_login"),
 ]
 

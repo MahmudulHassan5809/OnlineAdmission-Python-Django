@@ -16,10 +16,10 @@ from django.contrib.auth import get_user_model
 from applicant.models import ApplicantPrevEducation, ApplicantProfile
 from applicant.forms import ApplicantProfileForm, ApplicantPrevEducationForm, ApplicantPrevEducationFormSet
 
-from institution.models import InstitutionProfile, AdmissionSession, InstitutionSubject
+from institution.models import InstitutionProfile, AdmissionSession, InstitutionSubject, InstituteInstruction
 
 
-from institution.forms import AdmissionSessionForm, InstitutionSubjectForm, InstituteSearchForm
+from institution.forms import AdmissionSessionForm, InstitutionSubjectForm, InstituteSearchForm, InstituteInstructionForm
 
 from transaction.models import InstitutionTransactionMethod, ApplicationPayment
 from transaction.forms import InstitutionTransactionMethodForm, ApplicationPaymentForm
@@ -331,3 +331,76 @@ class InstituteSearchView(generic.ListView):
         context['institute_search_form'] = InstituteSearchForm()
         context['title'] = f'Search Results'
         return context
+
+
+class InstituteInstructionView(AictiveInstitutionRequiredMixin, generic.ListView):
+    model = InstituteInstruction
+    context_object_name = 'instruction_list'
+    template_name = 'institution/instruction/instruction_list.html'
+
+    def get_queryset(self):
+        qs = InstituteInstruction.objects.filter(
+            institute=self.request.user.user_institute)
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Institute Instruction'
+        return context
+
+
+class CreateInstructionView(SuccessMessageMixin, AictiveInstitutionRequiredMixin, generic.edit.CreateView):
+    model = InstituteInstruction
+    form_class = InstituteInstructionForm
+    template_name = 'institution/instruction/create_instruction.html'
+    success_message = "Instruction  was created successfully"
+    success_url = reverse_lazy('institution:institute_instruction')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Create Instruction'
+        return context
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.institute = self.request.user.user_institute
+        self.object.save()
+
+        return super(CreateInstructionView, self).form_valid(form)
+
+
+class EditInstructionView(SuccessMessageMixin, AictiveInstitutionRequiredMixin, generic.edit.UpdateView):
+    model = InstituteInstruction
+    form_class = InstituteInstructionForm
+    context_object_name = 'instruction_obj'
+    template_name = 'institution/instruction/update_instruction.html'
+    success_message = "Instruction  was updated successfully"
+    success_url = reverse_lazy('institution:institute_instruction')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Update Instruction'
+        return context
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.institute = self.request.user.user_institute
+        self.object.save()
+
+        return super(EditInstructionView, self).form_valid(form)
+
+
+class DeleteInstructionView(SuccessMessageMixin, AictiveInstitutionRequiredMixin, generic.edit.DeleteView):
+    model = InstituteInstruction
+    template_name = 'institution/instruction/delete_instruction.html'
+    success_message = "Instruction was deleted successfully"
+    success_url = reverse_lazy('institution:institute_instruction')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Delete Instruction'
+        return context
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super(DeleteInstructionView, self).delete(request, *args, **kwargs)

@@ -1,0 +1,56 @@
+{% extends "institution_base.html" %}
+
+{% block title %}
+    {{title}}
+{% endblock title %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-10 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="float-left">
+                        Institute Instruction
+                    </h4>
+                    <a href="{% url 'institution:create_instruction' %}" class="float-right btn btn-sm btn-info">
+                        <i class="fas fa-plus">Add Instruction</i>
+                    </a>
+                </div>
+                <div class="card-body">
+
+                    <table id="datatable" class="table table-striped dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                        <thead>
+                            <tr>
+                                <th>Institute Name</th>
+                                <th>Instruction Title</th>
+                                <th>Instruction Body</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for instruction in instruction_list %}
+
+
+                                <tr>
+                                <td>{{instruction.institute.institute_name}}</td>
+                                <td>{{instruction.title}}</td>
+                                <td>{{instruction.body|striptags|truncatewords:8}}</td>
+                               <td>
+                                    <a href="{% url 'institution:edit_instruction' instruction.id %}" class="btn btn-primary btn-block">
+                                        <i class="fas fa-edit mr-1"></i> Edit
+                                    </a>
+                                    <a href="{% url 'institution:delete_instruction' instruction.id %}" class="btn btn-danger btn-block">
+                                        <i class="fas fa-trash mr-1"></i> Delete
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+{% endblock content %}

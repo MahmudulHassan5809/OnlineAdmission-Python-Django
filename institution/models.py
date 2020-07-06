@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
+from ckeditor.fields import RichTextField
 # Create your models here.
 
 
@@ -77,3 +78,17 @@ class AdmissionSession(models.Model):
 
     def __str__(self):
         return self.session_name
+
+
+class InstituteInstruction(models.Model):
+    institute = models.ForeignKey(
+        InstitutionProfile, on_delete=models.CASCADE, related_name='institute_instructions')
+    title = models.CharField(max_length=255)
+    body = RichTextField()
+
+    class Meta:
+        verbose_name = 'InstituteInstruction'
+        verbose_name_plural = '3. InstituteInstruction'
+
+    def __str__(self):
+        return self.title
