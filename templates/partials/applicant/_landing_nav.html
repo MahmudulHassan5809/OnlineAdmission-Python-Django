@@ -15,11 +15,11 @@
                 </li>
 
                 <li class="nav-item {% if request.resolver_match.url_name == 'site_faq' %} active {% endif %}">
-                    <a class="nav-link" href="{% url 'settings:site_faq' %}"><i class="fas fa-user-plus"></i>FAQ</a>
+                    <a class="nav-link" href="{% url 'settings:site_faq' %}"><i class="fas fa-question-circle"></i>FAQ</a>
                 </li>
 
-                <li class="nav-item}">
-                    <a class="nav-link" href="javascript:void(0)"><i class="fas fa-user-plus"></i>HELPLINE:{{site_info.site_phone}}</a>
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:void(0)"><i class="fas fa-headset"></i></i>HELPLINE:{{site_info.site_phone}}</a>
                 </li>
 
             </ul>
