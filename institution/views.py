@@ -404,3 +404,19 @@ class DeleteInstructionView(SuccessMessageMixin, AictiveInstitutionRequiredMixin
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, self.success_message)
         return super(DeleteInstructionView, self).delete(request, *args, **kwargs)
+
+
+class InstituteInstructionDetailsView(View):
+    def get(self, request, *args, **kwargs):
+        institution_id = kwargs.get('institution_id')
+        institution_obj = get_object_or_404(
+            InstitutionProfile, id=institution_id)
+        institution_instructions = institution_obj.institute_instructions.all()
+
+        context = {
+            'title': f"{institution_obj.institute_name}'s Instruction",
+            'institution_obj': institution_obj,
+            'institution_instructions': institution_instructions
+        }
+
+        return render(request, 'common/institute_instruction.html', context)

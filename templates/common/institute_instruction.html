@@ -1,0 +1,47 @@
+{% extends "landing_base.html" %}
+
+
+
+{% block title %}
+    {{title}}
+{% endblock title %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-inverse text-white" style="background-color: #0fc846; border-color: #0fc846;">
+            <div class="card-body">
+                <div class="float-left">
+                    <h1 class="card-title text-white" style="font-size:30px;">{{institution_obj.institute_name}}</h1>
+                    <p class="card-text m-0">{{institution_obj.institute_location}}</p>
+                    <p class="card-text m-0">{{institution_obj.institute_city}}</p>
+                    <p class="card-text m-0">Institute Code {{institution_obj.institute_code}}</p>
+                </div>
+                <div class="float-right">
+                    <img src="{{institution_obj.institute_pic.url}}" width="150px">
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="card card-inverse text-white">
+            {% for instruction in institution_instructions %}
+                <div class="card-header bg-info">
+                    <h1 class="lead font-weight-bold">
+                        {{instruction.title}}
+                    </h1>
+                </div>
+                <div class="card-body text-dark">
+                    <p class="lead text-dark">
+                        {{instruction.body|safe}}
+                    </p>
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</div>
+
+
+{% endblock content %}

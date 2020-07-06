@@ -61,7 +61,7 @@
                             <div class="col-3 live__scroll--box">
                                 <img src="{{institute.institute_pic.url}}" class="img-fluid" width="150px">
                                 <p class="lead text-dark">
-                                    <a href="">{{admission.institute.institute_name}}</a>
+                                    <a href="{% url 'institution:institute_instruction_details' institute.id %}">{{institute.institute_name}}</a>
                                 </p>
                             </div>
                         {% endfor %}

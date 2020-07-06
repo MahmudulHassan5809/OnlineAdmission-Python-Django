@@ -52,6 +52,9 @@ urlpatterns = [
     path('institute/instruction/delete/<int:pk>/', views.DeleteInstructionView.as_view(),
          name='delete_instruction'),
 
+    path('institute/instruction/details/<int:institution_id>/', views.InstituteInstructionDetailsView.as_view(),
+         name='institute_instruction_details'),
+
 
 
     path('institute/search/', views.InstituteSearchView.as_view(),
