@@ -20,19 +20,20 @@
                         <thead>
                             <tr>
                                 <th>Application Owner</th>
+                                <th>Roll Number</th>
                                 <th>Student Name</th>
                                 <th>Institute Name</th>
                                 <th>Subject</th>
                                 <th>Level</th>
                                 <th>Paid</th>
                                 <th>Created At</th>
-                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for application in pending_applications %}
                             <tr>
                                 <td>{{application.applicant.student_name}}</td>
+                                <td>{{application.roll_number}}</td>
                                 <td>{{application.owner.username|title}}</td>
                                 <td>{{application.institute.institute_name}}</td>
                                 <td>{{application.subject.subject_name}}</td>
@@ -40,7 +41,6 @@
                                 <td>{{application.paid}}</td>
 
                                 <td>{{application.created_at}}</td>
-                                <td></td>
                             </tr>
 
                             {% endfor %}

@@ -1,8 +1,13 @@
 from django.db import models
+import random
 from django.contrib.auth import get_user_model
 from applicant.models import ApplicantProfile
 from institution.models import InstitutionProfile, AdmissionSession, InstitutionSubject
 # Create your models here.
+
+
+def create_new_roll_number():
+    return str(random.randint(1000000000, 9999999999))
 
 
 class Application(models.Model):
@@ -15,6 +20,10 @@ class Application(models.Model):
         ('1', 'Bachelor'),
         ('2', 'Masters'),
     )
+    roll_number = models.CharField(max_length=10,
+                                   editable=False,
+                                   unique=True,
+                                   default=create_new_roll_number())
     owner = models.ForeignKey(
         get_user_model(), on_delete=models.CASCADE, related_name='owner_applications')
     applicant = models.ForeignKey(

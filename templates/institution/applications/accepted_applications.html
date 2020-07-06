@@ -20,6 +20,7 @@
                         <thead>
                             <tr>
                                 <th>Application Owner</th>
+                                <th>Roll Number</th>
                                 <th>Phone</th>
                                 <th>Student Name</th>
                                 <th>Institute Name</th>
@@ -35,6 +36,7 @@
                             {% for application in accepted_applications %}
                             <tr>
                                 <td>{{application.owner.username|title}}</td>
+                                <td>{{application.roll_number}}</td>
                                 <td>{{application.owner.user_profile.phone_number}}</td>
                                 <td>{{application.applicant.student_name}}</td>
                                 <td>{{application.institute.institute_name}}</td>
