@@ -13,7 +13,7 @@ class SiteInfo(models.Model):
         verbose_name_plural = '1.SiteInfo'
 
     def __str__(self):
-        return site_name
+        return self.site_name
 
 
 class ApplicationInstruction(models.Model):

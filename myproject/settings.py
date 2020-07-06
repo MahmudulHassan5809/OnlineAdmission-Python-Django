@@ -85,6 +85,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'institution.context_processors.on_going_admission',
+                'settings.context_processors.site_info',
             ],
         },
     },

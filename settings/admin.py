@@ -35,8 +35,5 @@ class SiteFaqAdmin(admin.ModelAdmin):
     search_fields = ['question', 'answer']
     list_per_page = 20
 
-    def has_add_permission(self, request):
-        return False if self.model.objects.count() > 0 else True
-
 
 admin.site.register(SiteFaq, SiteFaqAdmin)
