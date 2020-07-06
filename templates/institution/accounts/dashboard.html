@@ -7,32 +7,52 @@
 
 {% block content %}
     <div class="row">
-        {% for instruction in instructions %}
+        <div class="col-md-12">
+            <div class="row">
 
-
-        <div class="col-md-8 mx-auto">
-
-            <div class="card">
-                <div class="card-header bg-light">
-                    <h4>{{instruction.title}}</h4>
+                <div class="col-xl-4 col-sm-6">
+                    <div class="card bg-pink">
+                        <div class="card-body widget-style-2">
+                            <div class="text-white media">
+                                <div class="media-body align-self-center">
+                                    <h2 class="my-0 text-white"><span data-plugin="counterup">{{total_application}}</span></h2>
+                                    <p class="mb-0">Total Application</p>
+                                </div>
+                                <i class="fab fa-wpforms"></i>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
+                <div class="col-xl-4 col-sm-6">
+                    <div class="card bg-purple">
+                        <div class="card-body widget-style-2">
+                            <div class="text-white media">
+                                <div class="media-body align-self-center">
+                                    <h2 class="my-0 text-white"><span data-plugin="counterup">{{total_pending_application}}</span></h2>
+                                    <p class="mb-0">Pending Application</p>
+                                </div>
+                                <i class="far fa-bell-slash"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                <ul class="list-group list-group-flush">
-                    {% for item in instruction.instructions.all %}
+                <div class="col-xl-3 col-sm-6">
+                    <div class="card bg-info">
+                        <div class="card-body widget-style-2">
+                            <div class="text-white media">
+                                <div class="media-body align-self-center">
+                                    <h2 class="my-0 text-white"><span data-plugin="counterup">{{total_accepted_application}}</span></h2>
+                                    <p class="mb-0">Accepted Application</p>
+                                </div>
+                                <i class="far fa-calendar-check"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-
-                    <li class="list-group-item font-weight-bold">
-                        <i class="fas fa-check"></i>
-                        {{item.name}}
-                    </li>
-
-                    {% endfor %}
-                </ul>
             </div>
-
         </div>
-
-        {% endfor %}
     </div>
 {% endblock content %}

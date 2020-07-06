@@ -15,6 +15,7 @@ from .forms import SignUpForm, UserForm, ProfileForm
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.forms import PasswordChangeForm
 from institution.forms import InstituteSearchForm
+from applications.models import Application
 from django.views import View, generic
 
 # Create your views here.
@@ -189,11 +190,19 @@ class InstitutionDashboardView(AictiveInstitutionRequiredMixin, View):
     def get(self, request, *args, **kwrags):
         user_obj = get_object_or_404(get_user_model(), id=request.user.id)
         user_profile = user_obj.user_profile
-
+        total_application = Application.objects.filter(
+            institute=request.user.user_institute).count()
+        total_pending_application = Application.objects.filter(
+            institute=request.user.user_institute, status='0', paid=False).count()
+        total_accepted_application = Application.objects.filter(
+            institute=request.user.user_institute, status='1', paid=True).count()
         context = {
             'title': 'Institution Dashboard',
             'user_obj': user_obj,
             'user_profile': user_profile,
+            'total_application': total_application,
+            'total_pending_application': total_pending_application,
+            'total_accepted_application': total_accepted_application
         }
 
         return render(request, 'institution/accounts/dashboard.html', context)
