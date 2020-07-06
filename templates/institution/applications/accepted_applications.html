@@ -96,15 +96,15 @@
 {% block script %}
     <script>
         jQuery(document).ready(function($) {
-
-            $('.profile').click(function (e) {
-                e.preventDefault();
+            $(document.body).on('click', '.profile', function(event) {
+                event.preventDefault();
                 let profileHtml = '';
                 let educationHtml = '';
                 url = $(this).attr("data-profile-url");
                 $.ajax({
                     url: url,
                     success: function (data) {
+                        console.log(data)
                         var idx = 1;
                         var profile = data.slice(0,idx);
                         var education = data.slice(idx);
@@ -166,7 +166,9 @@
                        console.log(xhr)
                     }
                 });
-            })
+
+            });
+
 
             $(".modal").on("hidden.bs.modal", function(){
                 $(".modal-body").html("");

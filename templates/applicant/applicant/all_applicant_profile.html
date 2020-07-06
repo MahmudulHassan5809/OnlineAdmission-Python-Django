@@ -91,8 +91,8 @@
 {% block script %}
     <script>
         jQuery(document).ready(function($) {
-            $('.status').click(function (e) {
-                e.preventDefault();
+            $(document.body).on('click', '.status', function(event) {
+                event.preventDefault();
                 let statusHtml = '';
                 url = $(this).attr("data-status-url");
                 $.ajax({
@@ -112,7 +112,7 @@
                             statusHtml += `
                                 <div class="card">
                                     <ul class="list-group list-group-flush font-weight-bold text-dark">
-                                        <li class="list-group-item">Application Fee : ${element.fields.paid ? 'Paid' : 'Unpaid'}</li>
+                                        <li class="list-group-item">Application Fee : ${element.fields.paid ? 'Paid' : 'Pending'}</li>
                                         <li class="list-group-item">Status : ${status}</li>
                                         <li class="list-group-item">
                                             Admit Card
@@ -129,7 +129,8 @@
                        console.log(xhr)
                     }
                 });
-            })
+            });
+
             $(".modal").on("hidden.bs.modal", function(){
                 $(".modal-body").html("");
             });
