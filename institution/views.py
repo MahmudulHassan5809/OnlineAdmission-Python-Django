@@ -39,7 +39,7 @@ class AdmissionSessionView(AictiveInstitutionRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         try:
-            qs = AdmissionSession.objects.filter(
+            qs = AdmissionSession.objects.select_related('institute').filter(
                 institute=self.request.user.user_institute).first()
         except Exception as e:
             qs = None
@@ -52,7 +52,7 @@ class AdmissionSessionView(AictiveInstitutionRequiredMixin, generic.ListView):
 
     def render_to_response(self, context):
         try:
-            qs = AdmissionSession.objects.filter(
+            qs = AdmissionSession.objects.select_related('institute').filter(
                 institute=self.request.user.user_institute).first()
         except Exception as e:
             messages.info(self.request, 'You Dont Have Any Institute')
@@ -164,7 +164,7 @@ class MyInstituteSubjectView(AictiveInstitutionRequiredMixin, generic.ListView):
     template_name = 'institution/subjects/all_subject.html'
 
     def get_queryset(self):
-        qs = InstitutionSubject.objects.filter(
+        qs = InstitutionSubject.objects.select_related('institute').filter(
             institute=self.request.user.user_institute)
         return qs
 
@@ -238,7 +238,7 @@ class PendingApplicationView(AictiveInstitutionRequiredMixin, generic.ListView):
     template_name = 'institution/applications/pending_applications.html'
 
     def get_queryset(self):
-        qs = Application.objects.filter(
+        qs = Application.objects.select_related('owner', 'applicant', 'institute', 'subject').filter(
             institute=self.request.user.user_institute, status='0')
         return qs
 
@@ -255,7 +255,7 @@ class AcceptedApplicationView(AictiveInstitutionRequiredMixin, generic.ListView)
     template_name = 'institution/applications/accepted_applications.html'
 
     def get_queryset(self):
-        qs = Application.objects.filter(
+        qs = Application.objects.select_related('owner', 'applicant', 'institute', 'subject').filter(
             institute=self.request.user.user_institute, status='1')
         return qs
 
@@ -339,7 +339,7 @@ class InstituteInstructionView(AictiveInstitutionRequiredMixin, generic.ListView
     template_name = 'institution/instruction/instruction_list.html'
 
     def get_queryset(self):
-        qs = InstituteInstruction.objects.filter(
+        qs = InstituteInstruction.objects.select_related('institute').filter(
             institute=self.request.user.user_institute)
         return qs
 

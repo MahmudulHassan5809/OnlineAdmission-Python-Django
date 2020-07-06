@@ -21,7 +21,8 @@ class ApplicantProfileView(generic.ListView):
     template_name = 'applicant/applicant/all_applicant_profile.html'
 
     def get_queryset(self):
-        qs = ApplicantProfile.objects.filter(owner=self.request.user)
+        qs = ApplicantProfile.objects.select_related(
+            'owner').filter(owner=self.request.user)
         return qs
 
     def get_context_data(self, **kwargs):
@@ -134,7 +135,7 @@ class ApplicantAdmitCardView(AictiveApplicantRequiredMixin, generic.ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        qs = Application.objects.filter(
+        qs = Application.objects.select_related('owner', 'applicant', 'institute', 'subject').filter(
             owner=self.request.user, status='1', paid=True)
         return qs
 
