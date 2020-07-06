@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 from django.core import serializers
 import json
 from django.urls import reverse_lazy
@@ -16,7 +18,8 @@ from applicant.forms import ApplicantProfileForm, ApplicantPrevEducationForm, Ap
 
 from institution.models import InstitutionProfile, AdmissionSession, InstitutionSubject
 
-from institution.forms import AdmissionSessionForm, InstitutionSubjectForm
+
+from institution.forms import AdmissionSessionForm, InstitutionSubjectForm, InstituteSearchForm
 
 from transaction.models import InstitutionTransactionMethod, ApplicationPayment
 from transaction.forms import InstitutionTransactionMethodForm, ApplicationPaymentForm
@@ -142,7 +145,7 @@ class MyInstituteView(AictiveInstitutionRequiredMixin, generic.ListView):
 class MyInstituteEditView(SuccessMessageMixin, AictiveInstitutionRequiredMixin, generic.edit.UpdateView):
     model = InstitutionProfile
     context_object_name = 'my_institute'
-    fields = ('institute_name', 'application_fee','institute_city', 'institute_location',
+    fields = ('institute_name', 'application_fee', 'institute_city', 'institute_location',
               'institute_code', 'gender', 'institute_pic')
     template_name = 'institution/institute/edit_my_institute.html'
     success_message = "Institute was updated successfully"
@@ -296,3 +299,35 @@ class ApplicantAdmitCardView(AictiveInstitutionRequiredMixin, View):
             filename, File(BytesIO(admit_card.content)))
 
         return admit_card
+
+
+@method_decorator(csrf_exempt, name='dispatch')
+class InstituteSearchView(generic.ListView):
+    model = InstitutionProfile
+    context_object_name = 'institute_list'
+    paginate_by = 10
+    template_name = 'common/search_results.html'
+
+    def get_queryset(self):
+        if self.request.GET.get('city'):
+            subject_id = self.request.GET.get('subject')
+            try:
+                subject_obj = get_object_or_404(
+                    InstitutionSubject, id=subject_id)
+                institute_list = subject_obj.institute_subjects.all()
+            except Exception as e:
+                institute_list = InstitutionProfile.objects.filter(active=True)
+        else:
+            institute_list = InstitutionProfile.objects.filter(active=True)
+
+        if self.request.GET.get('city'):
+            city = self.request.GET.get('city')
+            institute_list = institute_list.filter(institute_city__exact=city)
+        return institute_list
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        tag_slug = self.kwargs.get('slug')
+        context['institute_search_form'] = InstituteSearchForm()
+        context['title'] = f'Search Results'
+        return context

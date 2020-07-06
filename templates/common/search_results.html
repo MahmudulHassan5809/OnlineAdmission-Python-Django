@@ -9,7 +9,7 @@
 {% block content %}
 
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-12">
         <h1>vortibd.com-এ স্বাগতম</h1>
        <p class="lead text-dark">
            vortibd.com হলো এমন একটি ওয়েবসাইট, যেখানে একজন অভিভাবক শুধুমাত্র একটি অ্যাকাউন্ট তৈরী করে আমাদের রেজিস্টার্ড যেকোন শিক্ষা প্রতিষ্ঠানে তার এক বা একাধিক সন্তানের ভর্তির জন্য আবেদন করতে পারবেন।
@@ -27,40 +27,7 @@
            ভর্তির আবেদন ফরমের মূল্য যেকোন মোবাইল ব্যাংকিং, ভিসা/মাস্টার/অ্যামেক্স কার্ড অথবা নির্দিষ্ট ব্যাংকের ইন্টারনেট ব্যাংকিং-এর মাধ্যমে পরিশোধ করা যায়।
        </p>
       </div>
-      <div class="col-md-4">
-          <div class="card mt-4">
-                        <div class="card-header p-4 bg-primary">
-                            <h4 class="text-white text-center mb-0 mt-0">Login</h4>
-                        </div>
-                        <div class="card-body">
-                            <form action="{% url 'home_login' %}" method="POST" novalidate class="p-2">
-                                {% csrf_token %}
 
-                                {{form|crispy}}
-
-                                <div class="form-group mb-4">
-                                    <div class="checkbox checkbox-success">
-                                       <a href="{% url 'accounts:password_reset' %}" class="text-muted float-right d-block">Forgot your password?</a>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row text-center mt-4 mb-4">
-                                    <div class="col-12">
-                                        <button class="btn btn-md btn-block btn-primary waves-effect waves-light" type="submit">Sign In</button>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row mb-0">
-                                    <div class="col-sm-12 text-center">
-                                        <p class="text-muted mb-0">Don't have an account? <a href="{% url 'accounts:register' %}" class="text-dark m-l-5"><b>Sign Up</b></a></p>
-                                    </div>
-                                </div>
-                            </form>
-
-                        </div>
-                        <!-- end card-body -->
-                    </div>
-      </div>
 
       <div class="card w-100 shadow p-4">
           <div class="col-md-12">
@@ -86,28 +53,28 @@
     <div class="row">
         <div class="card w-100">
             <div class="col-md-12">
-                <h1 style="font-size: 25px;" class="text-center lead text-success font-weight-bold border-bottom">Online Admission Going on</h1>
+                <h1 style="font-size: 25px;" class="text-center lead text-success font-weight-bold border-bottom">{{title}}</h1>
 
                 <div class="live__scroll">
                     <div class="row text-center">
-                        {% for admission in on_going_admission %}
+                        {% for institute in institute_list %}
                             <div class="col-3 live__scroll--box">
-                                <img src="{{admission.institute.institute_pic.url}}" class="img-fluid" width="150px">
+                                <img src="{{institute.institute_pic.url}}" class="img-fluid" width="150px">
                             </div>
                             <div class="col-3 live__scroll--box">
-                                <img src="{{admission.institute.institute_pic.url}}" class="img-fluid" width="150px">
+                                <img src="{{institute.institute_pic.url}}" class="img-fluid" width="150px">
                             </div>
                             <div class="col-3 live__scroll--box">
-                                <img src="{{admission.institute.institute_pic.url}}" class="img-fluid" width="150px">
+                                <img src="{{institute.institute_pic.url}}" class="img-fluid" width="150px">
                             </div>
                             <div class="col-3 live__scroll--box">
-                                <img src="{{admission.institute.institute_pic.url}}" class="img-fluid" width="150px">
+                                <img src="{{institute.institute_pic.url}}" class="img-fluid" width="150px">
                             </div>
                             <div class="col-3 live__scroll--box">
-                                <img src="{{admission.institute.institute_pic.url}}" class="img-fluid" width="150px">
+                                <img src="{{institute.institute_pic.url}}" class="img-fluid" width="150px">
                             </div>
                             <div class="col-3 live__scroll--box">
-                                <img src="{{admission.institute.institute_pic.url}}" class="img-fluid" width="150px">
+                                <img src="{{institute.institute_pic.url}}" class="img-fluid" width="150px">
                             </div>
                         {% endfor %}
                     </div>

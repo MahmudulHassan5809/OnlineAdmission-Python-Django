@@ -40,4 +40,7 @@ urlpatterns = [
 
     path('applicant-admit-card/<int:application_id>/', views.ApplicantAdmitCardView.as_view(),
          name='admit_card_generate'),
+
+    path('institute/search/', views.InstituteSearchView.as_view(),
+         name='institute_search')
 ]
