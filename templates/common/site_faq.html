@@ -1,0 +1,43 @@
+{% extends "landing_base.html" %}
+
+
+
+{% block title %}
+    {{title}}
+{% endblock title %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="lead text-dark font-weight-bold text-center" style="font-size: 30px;">
+            {{title}}
+        </h1>
+        <hr>
+
+        <div id="accordion" class="mb-3">
+            {% for faq in faq_list %}
+                <div class="card mb-0">
+                <div class="card-header" id="heading{{faq.id}}">
+                    <h6 class="m-0">
+                        <a href="#collapse{{faq.id}}" class="text-dark font-weight-bold" data-toggle="collapse"
+                                aria-expanded="true"
+                                aria-controls="collapse{{faq.id}}">
+                            {{faq.question}}
+                        </a>
+                    </h6>
+                </div>
+
+                <div id="collapse{{faq.id}}" class="collapse {% if forloop.counter == 1 %}show{% endif %}" aria-labelledby="heading{{faq.id}}" data-parent="#accordion">
+                    <div class="card-body text-dark font-weight-bold">
+                        {{faq.answer}}
+                    </div>
+                </div>
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</div>
+
+
+{% endblock content %}
