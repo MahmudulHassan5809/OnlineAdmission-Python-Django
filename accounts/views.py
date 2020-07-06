@@ -104,7 +104,7 @@ class MyProfileView(AictiveUserRequiredMixin, View):
         }
         if request.user.user_profile.user_type == '0':
             return render(request, 'applicant/accounts/my_profile.html', context)
-        else:
+        elif request.user.user_profile.user_type == '1':
             # Todo For University Holder
             return render(request, 'institution/accounts/my_profile.html', context)
 
@@ -128,7 +128,7 @@ class MyProfileView(AictiveUserRequiredMixin, View):
             }
             if request.user.user_profile.user_type == '0':
                 return render(request, 'applicant/accounts/my_profile.html', context)
-            else:
+            elif request.user.user_profile.user_type == '1':
                 # Todo For University Holder
                 return render(request, 'institution/accounts/my_profile.html', context)
 
@@ -142,7 +142,7 @@ class ChangePasswordView(AictiveUserRequiredMixin, View):
         }
         if request.user.user_profile.user_type == '0':
             return render(request, 'applicant/accounts/change_password.html', context)
-        else:
+        elif request.user.user_profile.user_type == '1':
             # Todo For University Holder
             return render(request, 'institution/accounts/change_password.html', context)
 
@@ -161,7 +161,7 @@ class ChangePasswordView(AictiveUserRequiredMixin, View):
         else:
             if request.user.user_profile.user_type == '0':
                 return render(request, 'applicant/accounts/change_password.html', context)
-            else:
+            elif request.user.user_profile.user_type == '1':
                 # Todo For University Holder
                 return render(request, 'institution/accounts/change_password.html', context)
 
@@ -177,8 +177,10 @@ class LoginSuccess(View):
         if request.user.user_profile.user_type == '0':
             # user is an admin
             return redirect("accounts:applicant_dashboard")
-        else:
+        elif request.user.user_profile.user_type == '1':
             return redirect("accounts:institution_dashboard")
+        elif request.user.is_superuser:
+            return redirect('admin:login')
 # Login Redirect View End
 
 
