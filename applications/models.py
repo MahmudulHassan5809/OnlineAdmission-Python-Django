@@ -14,7 +14,8 @@ class Application(models.Model):
     STATUS_CHOICES = (
         ('0', 'Pending'),
         ('1', 'Completed'),
-        ('2', 'Canceled')
+        ('2', 'Canceled'),
+        ('3', 'Waiting')
     )
     LEVEL_CHOICES = (
         ('1', 'Bachelor'),
@@ -33,7 +34,7 @@ class Application(models.Model):
     subject = models.ForeignKey(
         InstitutionSubject, on_delete=models.CASCADE, related_name='subject_applications')
     status = models.CharField(
-        max_length=10, choices=STATUS_CHOICES, default='0')
+        max_length=10, choices=STATUS_CHOICES, default='3')
     level = models.CharField(
         max_length=10, choices=LEVEL_CHOICES)
     paid = models.BooleanField(default=False)
