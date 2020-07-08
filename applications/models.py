@@ -1,6 +1,8 @@
 from django.db import models
 import random
 from django.contrib.auth import get_user_model
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from applicant.models import ApplicantProfile
 from institution.models import InstitutionProfile, AdmissionSession, InstitutionSubject
 # Create your models here.
@@ -48,3 +50,14 @@ class Application(models.Model):
 
     def __str__(self):
         return f"{self.applicant.student_name} apply to {self.institute.institute_name}"
+
+
+@receiver(post_save, sender=Application)
+def update_application_status(sender, instance, created, **kwargs):
+    try:
+        if created:
+            if instance.status == '3':
+                instance.status = '0'
+                instance.save()
+    except Exception as e:
+        pass
