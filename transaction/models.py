@@ -43,7 +43,7 @@ class ApplicationPayment(models.Model):
     status = models.CharField(
         max_length=10, choices=STATUS_CHOICES, default='0')
     completed = models.BooleanField(default=False)
-    pending = models.BooleanField(default=False)
+    pending = models.BooleanField(default=True)
     cancel = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True, auto_now=False)
 
