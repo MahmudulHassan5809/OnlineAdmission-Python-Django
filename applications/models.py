@@ -50,14 +50,3 @@ class Application(models.Model):
 
     def __str__(self):
         return f"{self.applicant.student_name} apply to {self.institute.institute_name}"
-
-
-@receiver(post_save, sender=Application)
-def update_application_status(sender, instance, created, **kwargs):
-    try:
-        if created:
-            if instance.status == '3':
-                instance.status = '0'
-                instance.save()
-    except Exception as e:
-        pass

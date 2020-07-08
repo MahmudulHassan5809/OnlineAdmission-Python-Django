@@ -59,6 +59,9 @@ class ApplicationPayment(models.Model):
 @receiver(post_save, sender=ApplicationPayment)
 def applicant_payment(sender, instance, created, **kwargs):
     if not instance.completed:
+        if created and instance.application.status == '3':
+            instance.application.status = '0'
+            instance.application.save()
         if instance.status == "0" and not instance.pending:
             instance.pending = True
             instance.application.status = '0'
