@@ -5,10 +5,17 @@ from django.contrib.auth import get_user_model
 from .models import AdmissionSession, InstitutionSubject, InstitutionProfile, InstituteInstruction
 
 
+class DateInput(forms.DateInput):
+    input_type = 'date'
+
+
 class AdmissionSessionForm(ModelForm):
     class Meta:
         model = AdmissionSession
         exclude = ('institute',)
+        widgets = {
+            'end_time': DateInput(),
+        }
 
 
 class InstitutionSubjectForm(ModelForm):

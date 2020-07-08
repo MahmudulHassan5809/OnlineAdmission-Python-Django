@@ -1,7 +1,9 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.urls import reverse_lazy
 from accounts.mixins import AictiveUserRequiredMixin, AictiveApplicantRequiredMixin, AictiveInstitutionRequiredMixin
 from django.contrib import messages
+from django.core import serializers
+import json
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import get_user_model
@@ -22,6 +24,15 @@ from applications.forms import ApplicationForm
 from django.views import View, generic
 
 # Create your views here.
+
+
+class TransactionDetailsView(AictiveApplicantRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        transaction_id = kwargs.get('transaction_id')
+        transaction_details = InstitutionTransactionMethod.objects.filter(
+            id=transaction_id)
+        data = serializers.serialize('json', transaction_details)
+        return HttpResponse(data, content_type='application/json')
 
 
 class TransactionMethodView(AictiveInstitutionRequiredMixin, generic.ListView):

@@ -11,14 +11,17 @@ class InstitutionTransactionMethod(models.Model):
     institute = models.ForeignKey(
         InstitutionProfile, on_delete=models.CASCADE, related_name='institute_transaction')
     method_name = models.CharField(max_length=50)
+    reference_id = models.CharField(max_length=50)
+    counter_no = models.IntegerField()
     account_number = models.CharField(max_length=50)
+    instruction = models.TextField()
 
     class Meta:
         verbose_name = 'Institution Transaction'
         verbose_name_plural = '1. Institution Transaction'
 
     def __str__(self):
-        return self.method_name
+        return f"{self.method_name} -- {self.account_number}"
 
 
 class ApplicationPayment(models.Model):

@@ -17,6 +17,7 @@
                 <div class="card-body">
                     <form action="{% url 'transaction:edit_transaction_method' transaction_method.id %}" method="POST" novalidate>
                         {% csrf_token %}
+                        {{ form.media }}
                         {{form|crispy}}
 
                         <input type="submit" value="Update">

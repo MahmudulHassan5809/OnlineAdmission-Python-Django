@@ -26,4 +26,8 @@ urlpatterns = [
 
     path('institute/payment/check/<int:id>/', views.InstitutePaymentCheckView.as_view(),
          name="institute_payment_check"),
+
+
+    path('applicant/transaction/details/<int:transaction_id>/',
+         views.TransactionDetailsView.as_view(), name='transaction_details')
 ]

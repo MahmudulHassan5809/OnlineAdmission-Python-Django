@@ -8,7 +8,7 @@
 
 {% block content %}
     <div class="row">
-        <div class="col-md-10 mx-auto">
+        <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
                     <h3>Pay Fee For {{institute_obj.institute_name}}--Amount : {{institute_obj.application_fee}}</h3>
@@ -20,8 +20,48 @@
 
                         <input type="submit" value="Pay">
                     </form>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card p-2">
+                <div class="card-header">
+                    <h1 class="lead text-dark font-weight-bold text-center">Instruction</h1>
+                </div>
+                <div class="card-body" class="lead text-center font-weight-bold text-dark">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Reference Number : <span id="ref_number"></span></li>
+                        <li class="list-group-item">Counter Number : <span id="counter_num"></span></li>
+                    </ul>
+                    <p id="instruction">
+
+                    </p>
                 </div>
             </div>
         </div>
     </div>
 {% endblock content %}
+
+
+{% block script %}
+<script>
+    $("#id_payment_method").change(function () {
+        var payment_method_id =  $(this).val()
+        $.ajax({
+            url: `/transaction/applicant/transaction/details/${payment_method_id}`,
+            success: function (data) {
+                data.forEach( function(element, index) {
+                    $("#ref_number").text(element.fields.reference_id)
+                    $("#counter_num").text(element.fields.counter_no)
+                    $("#instruction").text(element.fields.instruction)
+                });
+            },
+            error : function(err) {
+                console.log(err);
+            }
+      });
+
+    });
+</script>
+{% endblock script %}
