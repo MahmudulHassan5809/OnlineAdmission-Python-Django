@@ -41,6 +41,8 @@
                                 <td>
                                     {% if application.paid %}
                                         Paid
+                                    {% elif application.status == '0' %}
+                                        Pending
                                     {% else %}
                                         <a href="{% url 'transaction:pay_application_fee' application.id application.institute.id %}" class="btn btn-success btn-block">Pay Fee</a>
                                     {% endif %}
