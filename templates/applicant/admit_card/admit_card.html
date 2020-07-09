@@ -33,7 +33,12 @@
                                 <td>{{admit.subject.subject_name}}</td>
                                 <td>{{admit.get_level_display}}</td>
                                 <td>
-                                    <a href="{{admit.admit_card.url}}">Download</a>
+                                    {% if admit.admit_card %}
+                                        <a href="{{admit.admit_card.url}}">Download</a>
+                                    {% else %}
+                                        <a href="javascript:void(0)">Not AvialAble</a>
+                                    {% endif %}
+
                                 </td>
                             </tr>
                             {% endfor %}
