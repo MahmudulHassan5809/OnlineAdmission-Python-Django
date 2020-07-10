@@ -4,7 +4,7 @@ from django.dispatch import receiver
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from ckeditor.fields import RichTextField
-from institution.tasks import set_admission_as_inactive
+from institution.tasks import set_admission_as_inactive, send_email_to_subscriber
 # Create your models here.
 
 
@@ -124,8 +124,10 @@ def send_admission_start_msg(sender, instance, created, **kwargs):
 
     if instance.status:
         if created:
-            print('created and status active')
+            send_email_to_subscriber.delay(list(
+                instance.institute.institute_subscribers.all().values_list('user_email', flat=True)), instance.institute.institute_name)
         else:
-            print(instance.institute.institute_subscribers.all())
+            send_email_to_subscriber.delay(list(
+                instance.institute.institute_subscribers.all().values_list('user_email', flat=True)), instance.institute.institute_name)
 
     post_save.connect(send_admission_start_msg, sender=sender)
