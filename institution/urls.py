@@ -58,5 +58,8 @@ urlpatterns = [
 
 
     path('institute/search/', views.InstituteSearchView.as_view(),
-         name='institute_search')
+         name='institute_search'),
+
+    path('institute/subscribe/<int:institution_id>/',
+         views.InstituteSubscribeView.as_view(), name='institute_subscribe')
 ]

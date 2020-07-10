@@ -19,7 +19,7 @@ from applicant.forms import ApplicantProfileForm, ApplicantPrevEducationForm, Ap
 from institution.models import InstitutionProfile, AdmissionSession, InstitutionSubject, InstituteInstruction
 
 
-from institution.forms import AdmissionSessionForm, InstitutionSubjectForm, InstituteSearchForm, InstituteInstructionForm
+from institution.forms import AdmissionSessionForm, InstitutionSubjectForm, InstituteSearchForm, InstituteInstructionForm, SubscriptionForm
 
 from transaction.models import InstitutionTransactionMethod, ApplicationPayment
 from transaction.forms import InstitutionTransactionMethodForm, ApplicationPaymentForm
@@ -76,7 +76,7 @@ class CreateInstitutionSession(SuccessMessageMixin, AictiveInstitutionRequiredMi
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.institute = self.request.user.user_institute
-        self.object.save()
+        # self.object.save()
 
         return super(CreateInstitutionSession, self).form_valid(form)
 
@@ -106,7 +106,7 @@ class UpdateInstitutionSession(SuccessMessageMixin, AictiveInstitutionRequiredMi
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.institute = self.request.user.user_institute
-        self.object.save()
+        # self.object.save()
 
         return super(UpdateInstitutionSession, self).form_valid(form)
 
@@ -189,7 +189,7 @@ class AddMyInstituteSubjectView(SuccessMessageMixin, AictiveInstitutionRequiredM
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.institute = self.request.user.user_institute
-        self.object.save()
+        # self.object.save()
 
         return super(AddMyInstituteSubjectView, self).form_valid(form)
 
@@ -210,7 +210,7 @@ class EditMyInstituteSubjectView(SuccessMessageMixin, AictiveInstitutionRequired
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.institute = self.request.user.user_institute
-        self.object.save()
+        # self.object.save()
 
         return super(EditMyInstituteSubjectView, self).form_valid(form)
 
@@ -364,7 +364,7 @@ class CreateInstructionView(SuccessMessageMixin, AictiveInstitutionRequiredMixin
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.institute = self.request.user.user_institute
-        self.object.save()
+        # self.object.save()
 
         return super(CreateInstructionView, self).form_valid(form)
 
@@ -385,7 +385,7 @@ class EditInstructionView(SuccessMessageMixin, AictiveInstitutionRequiredMixin, 
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.institute = self.request.user.user_institute
-        self.object.save()
+        # self.object.save()
 
         return super(EditInstructionView, self).form_valid(form)
 
@@ -413,10 +413,31 @@ class InstituteInstructionDetailsView(View):
             InstitutionProfile, id=institution_id)
         institution_instructions = institution_obj.institute_instructions.all()
 
+        subscription_form = SubscriptionForm()
+
         context = {
             'title': f"{institution_obj.institute_name}'s Instruction",
             'institution_obj': institution_obj,
-            'institution_instructions': institution_instructions
+            'institution_instructions': institution_instructions,
+            'subscription_form': subscription_form
         }
 
         return render(request, 'common/institute_instruction.html', context)
+
+
+class InstituteSubscribeView(View):
+    def post(self, request, *args, **kwargs):
+        institution_id = kwargs.get('institution_id')
+        subscription_form = SubscriptionForm(request.POST)
+
+        if subscription_form.is_valid():
+            institution_obj = get_object_or_404(
+                InstitutionProfile, id=institution_id)
+            save_obj = subscription_form.save(commit=False)
+            save_obj.institute = institution_obj
+            save_obj.save()
+            messages.success(request, 'Thanks For Subscribing Us')
+            return redirect('institution:institute_instruction_details', institution_id)
+        else:
+            messages.error(request, 'Something Went Wrong Try Again')
+            return redirect('institution:institute_instruction_details', institution_id)

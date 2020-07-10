@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from ckeditor.fields import RichTextField
@@ -105,3 +107,25 @@ class InstituteInstruction(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Subscription(models.Model):
+    institute = models.ForeignKey(
+        InstitutionProfile, on_delete=models.CASCADE, related_name='institute_subscribers')
+    user_email = models.EmailField()
+
+    def __str__(self):
+        return f"{self.user_email} subscribes {self.institute.institute_name}"
+
+
+@receiver(post_save, sender=AdmissionSession)
+def send_admission_start_msg(sender, instance, created, **kwargs):
+    post_save.disconnect(send_admission_start_msg, sender=sender)
+
+    if instance.status:
+        if created:
+            print('created and status active')
+        else:
+            print(instance.institute.institute_subscribers.all())
+
+    post_save.connect(send_admission_start_msg, sender=sender)

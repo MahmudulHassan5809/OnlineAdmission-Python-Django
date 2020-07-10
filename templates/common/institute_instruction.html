@@ -1,5 +1,6 @@
 {% extends "landing_base.html" %}
 
+{% load crispy_forms_tags %}
 
 
 {% block title %}
@@ -16,6 +17,12 @@
                     <p class="card-text m-0">{{institution_obj.institute_location}}</p>
                     <p class="card-text m-0">{{institution_obj.institute_city}}</p>
                     <p class="card-text m-0">Institute Code {{institution_obj.institute_code}}</p>
+
+                    <h5 class="lead text-dark font-weight-bold">Subscribe Us</h5>
+                    <form action="{% url 'institution:institute_subscribe' institution_obj.id %}" method="POST" novalidate>
+                        {% csrf_token %}
+                        {{subscription_form|crispy}}
+                    </form>
                 </div>
                 <div class="float-right">
                     <img src="{{institution_obj.institute_pic.url}}" width="150px">

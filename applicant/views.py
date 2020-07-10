@@ -91,6 +91,7 @@ class EditApplicantProfileView(SuccessMessageMixin, AictiveApplicantRequiredMixi
         context = self.get_context_data()
         preveducation = context['preveducation']
         with transaction.atomic():
+
             self.object = form.save(commit=False)
             self.object.owner = self.request.user
             self.object.save()

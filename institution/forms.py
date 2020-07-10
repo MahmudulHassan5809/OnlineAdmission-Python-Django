@@ -2,7 +2,7 @@ from django import forms
 from django.forms import ModelForm
 from ckeditor.widgets import CKEditorWidget
 from django.contrib.auth import get_user_model
-from .models import AdmissionSession, InstitutionSubject, InstitutionProfile, InstituteInstruction
+from .models import AdmissionSession, InstitutionSubject, InstitutionProfile, InstituteInstruction, Subscription
 
 
 class DateInput(forms.DateInput):
@@ -37,3 +37,16 @@ class InstituteInstructionForm(ModelForm):
     class Meta:
         model = InstituteInstruction
         exclude = ('institute',)
+
+
+class SubscriptionForm(ModelForm):
+    class Meta:
+        model = Subscription
+        exclude = ('institute',)
+        widgets = {
+            'user_email': forms.TextInput(attrs={'placeholder': 'Your Email'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(SubscriptionForm, self).__init__(*args, **kwargs)
+        self.fields['user_email'].label = ""
