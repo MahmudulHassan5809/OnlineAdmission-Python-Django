@@ -4,7 +4,7 @@ Online Admission System For All Univeristy In Bangladesh
 
 
 <h2>Live Demo</h2>
-[Live Demo](http://vortibd5809.pythonanywhere.com/ "Live Demo")
+[Live Demo](http://vortibd5809.pythonanywhere.com)
 
 <h2>Requirements</h2>
 <pre>open requirements.txt file to see requirements & Create Virtual Env</pre>

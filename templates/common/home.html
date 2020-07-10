@@ -106,5 +106,32 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="card w-100">
+            <div class="col-md-12">
+                <h1 style="font-size: 25px;" class="text-center lead text-success font-weight-bold border-bottom">All Institute</h1>
+
+                <div class="live__scroll">
+                    <div class="row text-center">
+                        {% for institute in all_institute_profile %}
+                            <div class="col-3 live__scroll--box">
+                                <img src="{{institute.institute_pic.url}}" class="img-fluid" width="150px">
+
+                                <h3 class="font-weight-bold text-dark text-center">Subscribe Us</h3>
+                                <form action="{% url 'institution:institute_subscribe' institute.id %}" method="POST" class="mt-1">
+                                  {% csrf_token %}
+                                  {{subscription_form|crispy}}
+                                </form>
+
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
 
 {% endblock content %}
