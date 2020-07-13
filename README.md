@@ -8,6 +8,9 @@ Online Admission System For All Univeristy In Bangladesh
 
 <h2>Requirements</h2>
 <pre>open requirements.txt file to see requirements & Create Virtual Env</pre>
+
+pip install -U setuptools
+
 <code>pip install -r requirements.txt</code>
 
 <h2>Installing</h2>
