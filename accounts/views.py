@@ -190,12 +190,17 @@ class InstitutionDashboardView(AictiveInstitutionRequiredMixin, View):
     def get(self, request, *args, **kwrags):
         user_obj = get_object_or_404(get_user_model(), id=request.user.id)
         user_profile = user_obj.user_profile
-        total_application = Application.objects.filter(
-            institute=request.user.user_institute).count()
-        total_pending_application = Application.objects.filter(
-            institute=request.user.user_institute, status='0', paid=False).count()
-        total_accepted_application = Application.objects.filter(
-            institute=request.user.user_institute, status='1', paid=True).count()
+        try:
+            total_application = Application.objects.filter(
+                institute=request.user.user_institute).count()
+            total_pending_application = Application.objects.filter(
+                institute=request.user.user_institute, status='0', paid=False).count()
+            total_accepted_application = Application.objects.filter(
+                institute=request.user.user_institute, status='1', paid=True).count()
+        except Exception as e:
+            total_application = 0
+            total_pending_application = 0
+            total_accepted_application = 0
         context = {
             'title': 'Institution Dashboard',
             'user_obj': user_obj,
