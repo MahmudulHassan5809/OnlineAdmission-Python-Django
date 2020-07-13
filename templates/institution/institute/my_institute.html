@@ -31,7 +31,10 @@
                                 <tr>
                                 <td>{{my_institute.institute_name}}</td>
                                 <td>
-                                    <img src="{{my_institute.institute_pic.url}}" width="150px">
+                                    {% if my_institute.institute_pic %}
+                                        <img src="{{my_institute.institute_pic.url}}" width="150px">
+                                    {% endif %}
+                                    No Image
                                 </td>
                                 <td>{{my_institute.institute_location}}</td>
                                 <td>{{my_institute.institute_code}}</td>

@@ -16,14 +16,16 @@ class InstitutionProfile(models.Model):
     )
     user = models.OneToOneField(
         get_user_model(), on_delete=models.CASCADE, related_name='user_institute')
-    institute_name = models.CharField(max_length=255)
-    institute_city = models.CharField(max_length=150)
-    institute_location = models.CharField(max_length=255)
-    institute_code = models.CharField(max_length=50)
-    application_fee = models.FloatField()
+    institute_name = models.CharField(max_length=255, default='Institute Name')
+    institute_city = models.CharField(max_length=150, default='Institute City')
+    institute_location = models.CharField(
+        max_length=255, default='Institute Location')
+    institute_code = models.CharField(max_length=50, default='Institute Code')
+    application_fee = models.FloatField(default=0.0)
     gender = models.CharField(
         max_length=10, choices=GENDER_CHOICES, default='3')
-    institute_pic = models.ImageField(upload_to="institution")
+    institute_pic = models.ImageField(
+        upload_to="institution", blank=True, null=True)
     active = models.BooleanField(default=True)
 
     class Meta:
