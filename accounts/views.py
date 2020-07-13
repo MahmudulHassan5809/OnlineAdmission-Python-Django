@@ -32,7 +32,7 @@ class HomeLoginView(LoginView):
         return context
 
     def render_to_response(self, context):
-        if self.request.user.is_authenticated:
+        if self.request.user.is_authenticated and self.request.user.user_profile.active and self.request.user.user_profile.email_confirmed:
             return redirect('accounts:login_success')
         return super().render_to_response(context)
 
@@ -177,7 +177,6 @@ class LoginSuccess(View):
         Redirects users based on whether they are in the admins group
         """
         if request.user.user_profile.user_type == '0':
-            # user is an admin
             return redirect("accounts:applicant_dashboard")
         elif request.user.user_profile.user_type == '1':
             return redirect("accounts:institution_dashboard")
