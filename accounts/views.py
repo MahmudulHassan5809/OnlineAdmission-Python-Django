@@ -188,7 +188,7 @@ class LoginSuccess(View):
 # Institution Holder Views Start
 class InstitutionDashboardView(AictiveInstitutionRequiredMixin, View):
     def get(self, request, *args, **kwrags):
-        user_obj = get_object_or_404(get_user_model(), id=request.user.id)
+        user_obj = request.user
         user_profile = user_obj.user_profile
         try:
             total_application = Application.objects.filter(
@@ -217,9 +217,10 @@ class InstitutionDashboardView(AictiveInstitutionRequiredMixin, View):
 # Applicant Holder Views Start
 class ApplicantDashboardView(AictiveApplicantRequiredMixin, View):
     def get(self, request, *args, **kwrags):
-        user_obj = get_object_or_404(get_user_model(), id=request.user.id)
+        user_obj = request.user
         user_profile = user_obj.user_profile
-        instructions = ApplicationInstruction.objects.all()
+        instructions = ApplicationInstruction.objects.prefetch_related(
+            'instructions').all()
 
         context = {
             'title': 'Applicant Dashboard',

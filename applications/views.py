@@ -124,7 +124,7 @@ class ApplicationListView(AictiveApplicantRequiredMixin, generic.ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        qs = self.request.user.owner_applications.all()
+        qs = self.request.user.owner_applications.select_related("owner","applicant","institute","subject").only("owner__username","applicant__student_name","institute__institute_name","level","status","paid","subject__subject_name").all()
         return qs
 
     def get_context_data(self, **kwargs):

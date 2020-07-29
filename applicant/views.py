@@ -22,7 +22,7 @@ class ApplicantProfileView(generic.ListView):
 
     def get_queryset(self):
         qs = ApplicantProfile.objects.select_related(
-            'owner').filter(owner=self.request.user)
+            'owner').filter(owner=self.request.user).only("owner__username", "father_name", "mother_name", "student_name", "student_pic")
         return qs
 
     def get_context_data(self, **kwargs):
@@ -78,7 +78,7 @@ class EditApplicantProfileView(SuccessMessageMixin, AictiveApplicantRequiredMixi
             context['preveducation'] = ApplicantPrevEducationFormSet(
                 self.request.POST, self.request.FILES, instance=self.object)
         else:
-            query_set = ApplicantPrevEducation.objects.filter(
+            query_set = ApplicantPrevEducation.objects.select_related('applicant').filter(
                 applicant=self.object)
             print(query_set)
             context['preveducation'] = ApplicantPrevEducationFormSet(
@@ -137,7 +137,7 @@ class ApplicantAdmitCardView(AictiveApplicantRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         qs = Application.objects.select_related('owner', 'applicant', 'institute', 'subject').filter(
-            owner=self.request.user, status='1', paid=True)
+            owner=self.request.user, status='1', paid=True).only("applicant__student_name","institute__institute_name","subject__subject_name","level","admit_card","owner__username")
         return qs
 
     def get_context_data(self, **kwargs):

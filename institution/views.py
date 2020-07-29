@@ -165,7 +165,7 @@ class MyInstituteSubjectView(AictiveInstitutionRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         qs = InstitutionSubject.objects.select_related('institute').filter(
-            institute=self.request.user.user_institute)
+            institute=self.request.user.user_institute).only("institute__institute_name", "subject_name", "level")
         return qs
 
     def get_context_data(self, **kwargs):
@@ -239,7 +239,7 @@ class PendingApplicationView(AictiveInstitutionRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         qs = Application.objects.select_related('owner', 'applicant', 'institute', 'subject').filter(
-            institute=self.request.user.user_institute, status='0')
+            institute=self.request.user.user_institute, status='0').only("owner__username", "applicant__student_name", "roll_number", "institute__institute_name", "subject__subject_name", "level", "paid", "created_at")
         return qs
 
     def get_context_data(self, **kwargs):
@@ -255,8 +255,8 @@ class AcceptedApplicationView(AictiveInstitutionRequiredMixin, generic.ListView)
     template_name = 'institution/applications/accepted_applications.html'
 
     def get_queryset(self):
-        qs = Application.objects.select_related('owner', 'applicant', 'institute', 'subject').filter(
-            institute=self.request.user.user_institute, status='1')
+        qs = Application.objects.select_related('owner__user_profile', 'applicant', 'institute', 'subject').filter(
+            institute=self.request.user.user_institute, status='1').only("owner__username","owner__user_profile__phone_number", "applicant__student_name", "roll_number", "institute__institute_name", "subject__subject_name", "level", "paid", "created_at")
         return qs
 
     def get_context_data(self, **kwargs):
@@ -340,7 +340,7 @@ class InstituteInstructionView(AictiveInstitutionRequiredMixin, generic.ListView
 
     def get_queryset(self):
         qs = InstituteInstruction.objects.select_related('institute').filter(
-            institute=self.request.user.user_institute)
+            institute=self.request.user.user_institute).only("institute__institute_name","title","body")
         return qs
 
     def get_context_data(self, **kwargs):

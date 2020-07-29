@@ -10,7 +10,7 @@ class ApplicationForm(ModelForm):
 
     class Meta:
         model = Application
-        exclude = ('owner', 'applicant', 'status', 'paid','admit_card')
+        exclude = ('owner', 'applicant', 'status', 'paid', 'admit_card')
 
     def __init__(self, *args, **kwargs):
         super(ApplicationForm, self).__init__(*args, **kwargs)
@@ -24,5 +24,4 @@ class ApplicationForm(ModelForm):
             except (ValueError, TypeError):
                 pass
         elif self.instance.pk:
-            print('0kkkkkkkkkkkkkkkkkk')
             self.fields['subject'].queryset = self.instance.user_institute.institute_subjects

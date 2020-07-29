@@ -43,8 +43,8 @@ class TransactionMethodView(AictiveInstitutionRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         try:
-            qs = InstitutionTransactionMethod.objects.filter(
-                institute=self.request.user.user_institute)
+            qs = InstitutionTransactionMethod.objects.select_related('institute').filter(
+                institute=self.request.user.user_institute).only("institute__institute_name", "method_name", "account_number")
         except Exception as e:
             qs = None
         return qs
@@ -121,7 +121,8 @@ class ApplicantPaymentListView(AictiveApplicantRequiredMixin, generic.ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        qs = ApplicationPayment.objects.filter(owner=self.request.user)
+        qs = ApplicationPayment.objects.select_related("application__applicant", "application__subject", "institute").filter(owner=self.request.user).only(
+            "application__applicant__student_name", "institute__institute_name", "application__level", "application__subject__subject_name", "institute__application_fee", "transaction_number", "status", "created_at")
         return qs
 
     def get_context_data(self, **kwargs):
@@ -189,8 +190,8 @@ class InstitutePaymentListView(AictiveInstitutionRequiredMixin, generic.ListView
     paginate_by = 10
 
     def get_queryset(self):
-        qs = ApplicationPayment.objects.filter(
-            institute=self.request.user.user_institute)
+        qs = ApplicationPayment.objects.select_related("application__applicant", "application__subject", "institute").filter(
+            institute=self.request.user.user_institute).only("application__applicant__student_name", "institute__institute_name", "application__level", "application__subject__subject_name", "institute__application_fee", "transaction_number", "status", "created_at", "application__applicant__contact_number")
         return qs
 
     def get_context_data(self, **kwargs):
