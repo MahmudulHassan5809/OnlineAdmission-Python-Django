@@ -25,7 +25,9 @@
                     </form>
                 </div>
                 <div class="float-right">
-                    <img src="{{institution_obj.institute_pic.url}}" width="150px">
+                    {% if institution_obj.institute_pic %}
+                        <img src="{{institution_obj.institute_pic.url}}" width="150px">
+                    {% endif %}
                 </div>
 
             </div>
