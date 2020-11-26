@@ -16,7 +16,7 @@
                 </div>
 
                 <div class="card-body">
-                    <form action="{% url 'accounts:my_profile' %}" method="POST" novalidate>
+                    <form action="{% url 'accounts:my_profile' %}" method="POST" novalidate enctype="multipart/form-data">
                         {% csrf_token %}
                         {{user_form|crispy}}
                         {{profile_form|crispy}}

@@ -15,7 +15,7 @@
                     </h4>
                 </div>
                 <div class="card-body">
-                    <form action="{% url 'institution:my_institute_edit' my_institute.id %}" method="POST" novalidate>
+                    <form action="{% url 'institution:my_institute_edit' my_institute.id %}" method="POST" novalidate enctype="multipart/form-data">
                         {% csrf_token %}
                         {{form|crispy}}
 
