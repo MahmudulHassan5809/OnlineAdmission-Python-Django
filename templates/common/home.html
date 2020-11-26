@@ -121,8 +121,10 @@
                                 <form action="{% url 'institution:institute_subscribe' institute.id %}" method="POST" class="mt-1">
                                   {% csrf_token %}
                                   {{subscription_form|crispy}}
+
+                                  <button type="submit" class="btn btn-info btn-sm btn-block">Subscribe</button>
                                 </form>
-                                <button type="submit" class="btn btn-info btn-sm btn-block">Subscribe</button>
+
                             </div>
                         {% endfor %}
                     </div>
