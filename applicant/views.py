@@ -53,15 +53,15 @@ class CreateApplicantProfileView(SuccessMessageMixin, AictiveApplicantRequiredMi
         context = self.get_context_data()
         preveducation = context['preveducation']
         with transaction.atomic():
-            self.object = form.save(commit=False)
-            self.object.owner = self.request.user
-            self.object.save()
-
-        if preveducation.is_valid():
-            preveducation.instance = self.object
-            preveducation.save()
-        return super(CreateApplicantProfileView, self).form_valid(form)
-
+            if preveducation.is_valid():
+                self.object = form.save(commit=False)
+                self.object.owner = self.request.user
+                self.object.save()
+                preveducation.instance = self.object
+                preveducation.save()
+                return redirect('applicant:applicant_profile')
+            else:
+                return self.render_to_response(self.get_context_data(form=form))
 
 class EditApplicantProfileView(SuccessMessageMixin, AictiveApplicantRequiredMixin, generic.UpdateView):
     model = ApplicantProfile
@@ -91,15 +91,13 @@ class EditApplicantProfileView(SuccessMessageMixin, AictiveApplicantRequiredMixi
         context = self.get_context_data()
         preveducation = context['preveducation']
         with transaction.atomic():
-
-            self.object = form.save(commit=False)
-            self.object.owner = self.request.user
-            self.object.save()
-
-        if preveducation.is_valid():
-            preveducation.instance = self.object
-            preveducation.save()
-        return super(EditApplicantProfileView, self).form_valid(form)
+            if preveducation.is_valid():
+                form.save()
+                preveducation.instance = self.object
+                preveducation.save()
+                return redirect('applicant:applicant_profile')
+            else:
+                return self.render_to_response(self.get_context_data(form=form))
 
 
 class DeleteApplicantProfileView(SuccessMessageMixin, AictiveApplicantRequiredMixin, generic.edit.DeleteView):

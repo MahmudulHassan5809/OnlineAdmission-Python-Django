@@ -71,8 +71,6 @@ class AddTransactionMethodView(SuccessMessageMixin, AictiveInstitutionRequiredMi
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.institute = self.request.user.user_institute
-        self.object.save()
-
         return super(AddTransactionMethodView, self).form_valid(form)
 
 
@@ -93,8 +91,6 @@ class EditTransactionMethodView(SuccessMessageMixin, AictiveInstitutionRequiredM
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.institute = self.request.user.user_institute
-        self.object.save()
-
         return super(EditTransactionMethodView, self).form_valid(form)
 
 

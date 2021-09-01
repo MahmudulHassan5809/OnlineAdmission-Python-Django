@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 # Create your models here.
 
 
@@ -81,3 +83,10 @@ class ApplicantPrevEducation(models.Model):
 
     def __str__(self):
         return self.applicant.student_name
+
+
+
+@receiver(post_save, sender=ApplicantProfile)
+def create_profile(sender, instance, created, **kwargs):
+    print('signal','-----',sender)
+    

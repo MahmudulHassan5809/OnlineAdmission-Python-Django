@@ -76,8 +76,6 @@ class CreateInstitutionSession(SuccessMessageMixin, AictiveInstitutionRequiredMi
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.institute = self.request.user.user_institute
-        # self.object.save()
-
         return super(CreateInstitutionSession, self).form_valid(form)
 
     def render_to_response(self, context):
@@ -106,8 +104,6 @@ class UpdateInstitutionSession(SuccessMessageMixin, AictiveInstitutionRequiredMi
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.institute = self.request.user.user_institute
-        # self.object.save()
-
         return super(UpdateInstitutionSession, self).form_valid(form)
 
 
@@ -189,8 +185,6 @@ class AddMyInstituteSubjectView(SuccessMessageMixin, AictiveInstitutionRequiredM
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.institute = self.request.user.user_institute
-        # self.object.save()
-
         return super(AddMyInstituteSubjectView, self).form_valid(form)
 
 
@@ -210,8 +204,6 @@ class EditMyInstituteSubjectView(SuccessMessageMixin, AictiveInstitutionRequired
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.institute = self.request.user.user_institute
-        # self.object.save()
-
         return super(EditMyInstituteSubjectView, self).form_valid(form)
 
 
@@ -385,8 +377,6 @@ class EditInstructionView(SuccessMessageMixin, AictiveInstitutionRequiredMixin, 
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.institute = self.request.user.user_institute
-        # self.object.save()
-
         return super(EditInstructionView, self).form_valid(form)
 
 

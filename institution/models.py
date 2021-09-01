@@ -133,3 +133,5 @@ def send_admission_start_msg(sender, instance, created, **kwargs):
                 instance.institute.institute_subscribers.all().values_list('user_email', flat=True)), instance.institute.institute_name)
 
     post_save.connect(send_admission_start_msg, sender=sender)
+
+
