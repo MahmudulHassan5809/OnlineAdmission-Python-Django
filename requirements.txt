@@ -3,7 +3,7 @@ asgiref==3.2.10
 billiard==3.6.3.0
 cairocffi==1.1.0
 CairoSVG==2.4.2
-celery==4.4.6
+celery==5.2.2
 cffi==1.14.0
 cssselect2==0.3.0
 defusedxml==0.6.0
